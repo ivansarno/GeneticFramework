@@ -1,6 +1,8 @@
-import functools
-from genetic import selectors, distributors, integer_mutators
-from genetic.generic import custom
+
+
+from genetic import selectors, distributors, integer
+from genetic.integer.algorithms import standard
+from genetic.integer import mutators
 
 
 def fitness(e):
@@ -18,8 +20,8 @@ def test():
     e = [17,18,19,20]
 
     p = [a,b,c,d,e]
-    mutator = functools.partial(integer_mutators.add_mut, max_value=25)
-    p = custom(p, 7, selectors.random_sel, distributors.random_dist, distributors.random_dist, fitness, mutator, 5, 5)
+    mutator = integer.mutators.add_mut
+    p = standard(p, 7, selectors.random_sel, distributors.random_dist, distributors.random_dist, fitness, mutator, 5, 5, 25)
     print(p)
 
 
@@ -41,3 +43,6 @@ def test():
 #             attempts = change
 #         population = generation
 #     return population
+
+
+
