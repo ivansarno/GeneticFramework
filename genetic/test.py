@@ -1,8 +1,7 @@
-
-
-from genetic import selectors, distributors, integer
-from genetic.integer.algorithms import standard
+from genetic import selectors, integer
+from genetic.generic import distributors
 from genetic.integer import mutators
+from genetic.integer.algorithms import standard
 
 
 def fitness(e):
@@ -25,24 +24,7 @@ def test():
     print(p)
 
 
-# def random_ev(population, change, fitness, mutator, selections=0, remains=0):
-#     selections = len(population) if selections == 0 else selections
-#     remains = len(population) if remains == 0 else remains
-#     attempts = change
-#     population = fit(population, fitness)
-#     population.sort(key=lambda x: x[1], reverse=True)
-#     while attempts:
-#         generation = selection(population, selectors.random_sel, selections)
-#         generation = cross(generation, distributors.random_dist)
-#         generation = mutation(generation, distributors.random_dist, mutator)
-#         generation = fit(generation, fitness)
-#         generation = death(generation + population, remains)
-#         if population[0][1] >= generation[0][1]:
-#             attempts -= 1
-#         else:
-#             attempts = change
-#         population = generation
-#     return population
+
 
 
 

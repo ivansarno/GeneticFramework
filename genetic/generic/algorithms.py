@@ -1,6 +1,6 @@
 import math
 
-from genetic.phases import selection, cross, mutation, fit, death
+from genetic.generic.phases import selection, cross, mutation, fit, death
 
 __author__ = 'ivansarno'
 __version__ = 'preview'
