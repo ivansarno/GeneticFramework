@@ -11,4 +11,6 @@ the framework it is composed by:
 
 -abstract genetic algorithms
 
+-algoritms specific for integer and bits sequences
+
 -examples
