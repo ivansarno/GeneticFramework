@@ -33,6 +33,5 @@ def mutation(generation: List[BitArray], distributor: Callable[[int], int],
     :return: list of mutated elements
     """
     for g in generation:
-        i = distributor(len(g))
-        mutator(g, i)
+        mutator(g, distributor(len(g)))
     return generation

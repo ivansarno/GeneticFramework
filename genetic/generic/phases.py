@@ -60,7 +60,7 @@ def death(population: list, remains: int) -> list:
     return population[0:remains]
 
 
-def mutation(generation: list, distributor: Callable[[int], int], mutator: Callable) -> list:
+def mutation(generation: list, distributor: Callable[[int], int], mutator: Callable[[object, int], type(None)]) -> list:
     """ Applay random mutation at element of the list
 
     :param generation: list of element
@@ -69,7 +69,5 @@ def mutation(generation: list, distributor: Callable[[int], int], mutator: Calla
     :return: list of mutated elements
     """
     for g in generation:
-        i = distributor(len(g))
-        # noinspection PyCallingNonCallable
-        g[i] = mutator(g[i])
+        mutator(g, distributor(len(g)))
     return generation

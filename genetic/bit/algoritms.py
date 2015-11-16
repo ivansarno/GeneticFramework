@@ -1,6 +1,5 @@
 import math
-
-from genetic import generic
+from genetic.generic import phases as gen
 from genetic.bit import phases
 
 __author__ = 'ivansarno'
@@ -23,14 +22,14 @@ def standard(population, change, selector, distributor1, distributor2, fitness, 
     :return: final population sorted reversed by value
     """
     attempts = change
-    population = generic.fit(population, fitness)
+    population = gen.fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts:
-        generation = generic.selection(population, selector, selections)
+        generation = gen.selection(population, selector, selections)
         generation = phases.cross(generation, distributor1)
         generation = phases.mutation(generation, distributor2, mutator)
-        generation = generic.fit(generation, fitness)
-        generation = generic.death(generation + population, remains)
+        generation = gen.fit(generation, fitness)
+        generation = gen.death(generation + population, remains)
         if population[0][1] >= generation[0][1]:
             attempts -= 1
         else:
@@ -55,14 +54,14 @@ def expansor(population, selector, distributor1, distributor2, fitness, mutator,
     :return: final population sorted reversed by value
     """
     number = int(len(population) * ratio)
-    population = generic.fit(population, fitness)
+    population = gen.fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) < max_element:
-        generation = generic.selection(population, selector, number)
+        generation = gen.selection(population, selector, number)
         generation = phases.cross(generation, distributor1)
         generation = phases.mutation(generation, distributor2, mutator)
-        generation = generic.fit(generation, fitness)
-        generation = generic.death(generation + population, number)
+        generation = gen.fit(generation, fitness)
+        generation = gen.death(generation + population, number)
         iterations -= 1
         number = int(number * ratio)
         population = generation
@@ -85,14 +84,14 @@ def restrictor(population, selector, distributor1, distributor2, fitness, mutato
     :return: final population sorted reversed by value
     """
     number = int(len(population) * ratio)
-    population = generic.fit(population, fitness)
+    population = gen.fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) > min_element:
-        generation = generic.selection(population, selector, number)
+        generation = gen.selection(population, selector, number)
         generation = phases.cross(generation, distributor1)
         generation = phases.mutation(generation, distributor2, mutator)
-        generation = generic.fit(generation, fitness)
-        generation = generic.death(generation + population, number)
+        generation = gen.fit(generation, fitness)
+        generation = gen.death(generation + population, number)
         iterations -= 1
         number = int(number * ratio)
         population = generation
@@ -119,14 +118,14 @@ def dynamic(population, change, selector, distributor1, distributor2, fitness, m
     attempts = change
     selections = int(len(population) * selection_ratio)
     remains = int(len(population) * death_ratio)
-    population = generic.fit(population, fitness)
+    population = gen.fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts and min_element < len(population) < max_element:
-        generation = generic.selection(population, selector, selections)
+        generation = gen.selection(population, selector, selections)
         generation = phases.cross(generation, distributor1)
         generation = phases.mutation(generation, distributor2, mutator)
-        generation = generic.fit(generation, fitness)
-        generation = generic.death(generation + population, remains)
+        generation = gen.fit(generation, fitness)
+        generation = gen.death(generation + population, remains)
         if population[0][1] >= generation[0][1]:
             attempts -= 1
         else:
