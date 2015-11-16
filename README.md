@@ -13,4 +13,6 @@ the framework it is composed by:
 
 -algoritms specific for integer and bits sequences
 
+-random initializers specific for integer and bits sequences
+
 -examples
