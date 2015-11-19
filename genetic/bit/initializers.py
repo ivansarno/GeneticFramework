@@ -3,7 +3,7 @@ from typing import List
 from bitstring import BitArray
 
 __author__ = 'ivansarno'
-__version__ = 'preview'
+__version__ = 'beta'
 __doc__ = """funtions to produces a random intial population"""
 
 

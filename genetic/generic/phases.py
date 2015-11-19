@@ -1,6 +1,6 @@
 from typing import Callable, Tuple
 __author__ = 'ivansarno'
-__version__ = 'preview'
+__version__ = 'beta'
 __doc__ = """Phases of generic genetic algorithm"""
 
 
@@ -22,13 +22,13 @@ def selection(population: list, selector:  Callable[[int], Tuple[int, int]], new
 def cross(couples: list, distributor: Callable[[int], int]) -> list:
     """ Create a list of element from a list of couples by crossover
 
-    :param couples:
+    :param couples: list of couples of elements
     :param distributor: funtion that select  random pivots for crossover
     :return: list of new elements (douples of couples number)
     """
     generation = []
     for c in couples:
-        pivot = distributor(len(c))
+        pivot = distributor(len(c[0]))
         new = c[0][0:pivot] + c[1][pivot:]
         generation.append(new)
         new = c[1][0:pivot] + c[0][pivot:]

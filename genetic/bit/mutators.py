@@ -2,8 +2,8 @@ import random
 from bitstring import BitArray
 
 __author__ = 'ivansarno'
-__version__ = 'preview'
-__doc__ = """mutation operator for bits"""
+__version__ = 'beta'
+__doc__ = """mutation operators for bits"""
 
 
 def repl_mut(element: BitArray, index: int):
@@ -12,20 +12,20 @@ def repl_mut(element: BitArray, index: int):
 
 
 def xor_mut(element: BitArray, index: int):
-    """Replace bit at index position a xor with random value"""
+    """Replace bit at index position with a xor with random value"""
     element[index] = random.randint(0, 1) ^ element[index]
 
 
 def and_mut(element: BitArray, index: int):
-    """Replace bit at index position a and with random value"""
+    """Replace bit at index position with a and with random value"""
     element[index] = random.randint(0, 1) & element[index]
 
 
 def or_mut(element: BitArray, index: int):
-    """Replace bit at index position a or with random value"""
+    """Replace bit at index position with a or with random value"""
     element[index] = random.randint(0, 1) | element[index]
 
 
 def neg_mut(element: BitArray, index: int):
-    """Replace bit at index position the negation"""
+    """Replace bit at index position with the negation"""
     element[index] = not element[index]

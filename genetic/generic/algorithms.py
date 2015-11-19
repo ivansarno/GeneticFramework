@@ -3,12 +3,12 @@ import math
 from genetic.generic.phases import selection, cross, mutation, fit, death
 
 __author__ = 'ivansarno'
-__version__ = 'preview'
+__version__ = 'beta'
 __doc__ = """Abstract Genetic Algorithm"""
 
 
 def standard(population, change, selector, distributor1, distributor2, fitness, mutator, selections, remains):
-    """ Abstract Genetic Algorithm, fully customizable.
+    """ Abstract Genetic Algorithm.
 
     :param population: initial elements
     :param change: number of iterations without the maximum value changes
@@ -49,8 +49,8 @@ def expansor(population, selector, distributor1, distributor2, fitness, mutator,
     :param fitness: function to estimate the usefulness of an element
     :param mutator: function that applies a muntation on a gene
     :param ratio: expansion ratio
-    :param iterations: number of iteration
-    :param max_element: max number of elements
+    :param iterations: number of iteration, by default unlimited
+    :param max_element: max number of elements, by default unlimited
     :return: final population sorted reversed by value
     """
     number = int(len(population) * ratio)
@@ -79,8 +79,8 @@ def restrictor(population, selector, distributor1, distributor2, fitness, mutato
     :param fitness: function to estimate the usefulness of an element
     :param mutator: function that applies a muntation on a gene
     :param ratio: reduction ratio
-    :param iterations: number of iteration
-    :param min_element: min mumber of elements
+    :param iterations: number of iteration, by default unlimited
+    :param min_element: min mumber of elements, by default 0
     :return: final population sorted reversed by value
     """
     number = int(len(population) * ratio)
@@ -111,8 +111,8 @@ def dynamic(population, change, selector, distributor1, distributor2, fitness, m
     :param mutator: function that applies a muntation on a gene
     :param selection_ratio: expansion ratio
     :param death_ratio: reduction ratio
-    :param min_element: min mumber of elements
-    :param max_element: max mumber of elements
+    :param min_element: min mumber of elements, by default 0
+    :param max_element: max mumber of elements, by default unlimited
     :return: final population sorted reversed by value
     """
     attempts = change
