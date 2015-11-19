@@ -1,18 +1,16 @@
 # GeneticFramework
 Framework for genetic algorithm in Python
 
-Preview 
-
 the framework it is composed by:
-
--basic selection functions
-
--basic mutation operator
 
 -abstract genetic algorithms
 
--algoritms specific for integer and bits sequences
+-basic selection functions
 
--random initializers specific for integer and bits sequences
+-basic mutation operator for integers and bits sequences
+
+-algoritms specific for integers and bits sequences
+
+-random initializers specific for integers and bits sequences
 
 -examples
