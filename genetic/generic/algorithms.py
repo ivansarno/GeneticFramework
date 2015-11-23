@@ -3,7 +3,7 @@ import math
 from genetic.generic.phases import selection, cross, mutation, fit, death
 
 __author__ = 'ivansarno'
-__version__ = 'beta'
+__version__ = 'v.1.0'
 __doc__ = """Abstract Genetic Algorithm"""
 
 
@@ -20,6 +20,16 @@ def standard(population, change, selector, distributor1, distributor2, fitness, 
     :param selections: number of couples created by selection phase (number of new element is douple)
     :param remains: number of elelement preserved for new iteration
     :return: final population sorted reversed by value
+    :type remains: int
+    :type selections: int
+    :type mutator: Callable[[object, int], type(None)]
+    :type fitness: Callable[[object], int]
+    :type distributor2: Callable[[int], int]
+    :type distributor1: Callable[[int], int]
+    :type selector: Callable[[int],Tuple[int,int]]
+    :type change: int
+    :type population: list
+    :rtype: List[Tuple[object, int]]
     """
     attempts = change
     population = fit(population, fitness)
@@ -52,6 +62,16 @@ def expansor(population, selector, distributor1, distributor2, fitness, mutator,
     :param iterations: number of iteration, by default unlimited
     :param max_element: max number of elements, by default unlimited
     :return: final population sorted reversed by value
+    :type ratio: int
+    :type iterations: int
+    :type mutator: Callable[[object, int], type(None)]
+    :type fitness: Callable[[object], int]
+    :type distributor2: Callable[[int], int]
+    :type distributor1: Callable[[int], int]
+    :type selector: Callable[[int],Tuple[int,int]]
+    :type max_element: int
+    :type population: list
+    :rtype: List[Tuple[object, int]]
     """
     number = int(len(population) * ratio)
     population = fit(population, fitness)
@@ -82,6 +102,16 @@ def restrictor(population, selector, distributor1, distributor2, fitness, mutato
     :param iterations: number of iteration, by default unlimited
     :param min_element: min mumber of elements, by default 0
     :return: final population sorted reversed by value
+    :type ratio: int
+    :type iterations: int
+    :type mutator: Callable[[object, int], type(None)]
+    :type fitness: Callable[[object], int]
+    :type distributor2: Callable[[int], int]
+    :type distributor1: Callable[[int], int]
+    :type selector: Callable[[int],Tuple[int,int]]
+    :type min_element: int
+    :type population: list
+    :rtype: List[Tuple[object, int]]
     """
     number = int(len(population) * ratio)
     population = fit(population, fitness)
@@ -114,6 +144,18 @@ def dynamic(population, change, selector, distributor1, distributor2, fitness, m
     :param min_element: min mumber of elements, by default 0
     :param max_element: max mumber of elements, by default unlimited
     :return: final population sorted reversed by value
+    :type min_element: int
+    :type max_element: int
+    :type mutator: Callable[[object, int], type(None)]
+    :type fitness: Callable[[object], int]
+    :type distributor2: Callable[[int], int]
+    :type distributor1: Callable[[int], int]
+    :type selector: Callable[[int],Tuple[int,int]]
+    :type min_element: int
+    :type death_ratio: int
+    :type selection_ratio: int
+    :type population: list
+    :rtype: List[Tuple[object, int]]
     """
     attempts = change
     selections = int(len(population) * selection_ratio)

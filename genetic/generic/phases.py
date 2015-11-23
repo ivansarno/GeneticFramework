@@ -1,13 +1,15 @@
-from typing import Callable, Tuple
+from typing import Callable, Tuple, List
+
 __author__ = 'ivansarno'
-__version__ = 'beta'
+__version__ = 'V.1.0'
 __doc__ = """Phases of generic genetic algorithm"""
 
 
-def selection(population: list, selector:  Callable[[int], Tuple[int, int]], new: int) -> list:
+def selection(population: List[Tuple[object, int]], selector:  Callable[[int], Tuple[int, int]], new: int) \
+        -> List[Tuple]:
     """ Return a list of couples for crossover selected randomly
 
-    :param population: list of elements
+    :param population: list of (element, value)
     :param selector: funtion to select the 2 elements (return 2 indexes)
     :param new: number of copules
     :return: list of couples selected randomly
@@ -19,7 +21,7 @@ def selection(population: list, selector:  Callable[[int], Tuple[int, int]], new
     return couples
 
 
-def cross(couples: list, distributor: Callable[[int], int]) -> list:
+def cross(couples: List[Tuple], distributor: Callable[[int], int]) -> list:
     """ Create a list of element from a list of couples by crossover
 
     :param couples: list of couples of elements
@@ -36,7 +38,7 @@ def cross(couples: list, distributor: Callable[[int], int]) -> list:
     return generation
 
 
-def fit(population, fitness: Callable[[int], int]):
+def fit(population, fitness: Callable[[object], int]) -> List[Tuple[object, int]]:
     """ Create a list of couples element * value
 
     :param population: list of elemet to evaluate
@@ -49,7 +51,7 @@ def fit(population, fitness: Callable[[int], int]):
     return fitted
 
 
-def death(population: list, remains: int) -> list:
+def death(population: List[Tuple[object, int]], remains: int) -> list:
     """ Return a list of best elements
 
     :param population: original elements

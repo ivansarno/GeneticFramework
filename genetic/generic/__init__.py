@@ -1,4 +1,5 @@
+from genetic.generic import algorithms, distributors, selectors
 __author__ = 'ivansarno'
-__version__ = 'beta'
-#__all__ = ['algorithms', 'distributors', 'selectors']
+__version__ = 'V.1.0'
+__all__ = ['algorithms', 'distributors', 'selectors']
 __doc__ = """Abstract generic algoritms and utility"""
