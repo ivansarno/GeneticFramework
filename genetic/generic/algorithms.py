@@ -62,7 +62,7 @@ def expansor(population, selector, distributor1, distributor2, fitness, mutator,
     :param iterations: number of iteration, by default unlimited
     :param max_element: max number of elements, by default unlimited
     :return: final population sorted reversed by value
-    :type ratio: int
+    :type ratio: float
     :type iterations: int
     :type mutator: Callable[[object, int], type(None)]
     :type fitness: Callable[[object], int]
@@ -102,7 +102,7 @@ def restrictor(population, selector, distributor1, distributor2, fitness, mutato
     :param iterations: number of iteration, by default unlimited
     :param min_element: min mumber of elements, by default 0
     :return: final population sorted reversed by value
-    :type ratio: int
+    :type ratio: float
     :type iterations: int
     :type mutator: Callable[[object, int], type(None)]
     :type fitness: Callable[[object], int]
@@ -152,8 +152,8 @@ def dynamic(population, change, selector, distributor1, distributor2, fitness, m
     :type distributor1: Callable[[int], int]
     :type selector: Callable[[int],Tuple[int,int]]
     :type min_element: int
-    :type death_ratio: int
-    :type selection_ratio: int
+    :type death_ratio: float
+    :type selection_ratio: float
     :type population: list
     :rtype: List[Tuple[object, int]]
     """
