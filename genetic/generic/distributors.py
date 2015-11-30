@@ -1,6 +1,6 @@
 import random
 __author__ = 'ivansarno'
-__version__ = 'V.1.0'
+__version__ = 'V.1.1'
 __doc__ = """Functions to select a pivot for crossover or an element for mutation"""
 
 

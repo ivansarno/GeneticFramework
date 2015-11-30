@@ -1,7 +1,7 @@
 import random
 from typing import Tuple
 __author__ = 'ivansarno'
-__version__ = 'V.1.0'
+__version__ = 'V.1.1'
 __doc__ = """Funtcions to select a random couple of element from a reverse ordered list, returns 2 indexes"""
 
 

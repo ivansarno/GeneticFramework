@@ -3,7 +3,7 @@ from genetic.bit import initializers, mutators
 from genetic.generic import distributors, selectors, algorithms
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.0'
+__version__ = 'V.1.1'
 __doc__ = """Example of algorithm for binary knapsack problem"""
 
 
