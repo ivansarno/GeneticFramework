@@ -16,3 +16,7 @@ the framework is composed by:
 -random initializers specific for integers and bits sequences
 
 -examples
+
+Dependencies:
+
+bitstring package
