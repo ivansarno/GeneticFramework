@@ -1,8 +1,11 @@
 from typing import Callable, Tuple, List
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Phases of generic genetic algorithm"""
+
+########
+###########
 
 
 def selection(population: List[Tuple[object, int]], selector:  Callable[[int], Tuple[int, int]], new: int) \
@@ -73,3 +76,32 @@ def mutation(generation: list, distributor: Callable[[int], int], mutator: Calla
     for g in generation:
         mutator(g, distributor(len(g)))
     return generation
+
+#############
+##########
+
+
+def standard_routine(population, selector, distributor1, distributor2, fitness, mutator, elements, minimum):
+    # selection
+    indexes = selector(elements)
+    first = population[indexes[0]][0]
+    second = population[indexes[1]][0]
+    # cross
+    pivot = distributor1(elements)
+    new = first[0:pivot] + second[pivot:]
+    # mutation
+    mutator(new, distributor2(len(new)))
+    # fit
+    value = fitness(new)
+    if value > minimum:
+        population.append((new, value))
+    # cross
+    pivot = distributor1(elements)
+    new = second[0:pivot] + first[pivot:]
+    # mutation
+    mutator(new, distributor2(len(new)))
+    # fit
+    value = fitness(new)
+    if value > minimum:
+        population.append((new, value))
+

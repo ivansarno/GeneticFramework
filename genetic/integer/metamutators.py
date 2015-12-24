@@ -1,7 +1,7 @@
 from typing import Callable
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Functions that return a complex mutator from  basic mutators, specific for integers"""
 
 
@@ -44,3 +44,10 @@ def complex_mutator(mutator_list: list, distributor: Callable[[int], int]) -> Ca
         mut = mutator_list[distributor(len(mutator_list))]
         mut(element, index, max_value=max_value, min_value=min_value)
     return f
+
+
+def int2gen(mutator, max_value, min_value=0):
+    """Return a generic mutator from an integer mutator"""
+    def m(element, index):
+        mutator(element, index, max_value=max_value, min_value=min_value)
+    return m

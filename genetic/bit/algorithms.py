@@ -1,14 +1,14 @@
 import math
 
-from genetic.bit import phases as bit
-from genetic.generic.phases import selection, fit, death
+from genetic.bit import phases
+from genetic.generic.phases import fit, death
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Abstract Genetic Algorithm specific for complex cross on BitArray"""
 
 
-def standard(population, change, selector, crosser, fitness, selections, remains):
+def standard(population, change, selector, crosser, fitness, selections, remains, distributor=None, mutator=None):
     """ Abstract Genetic Algorithm.
 
     :param population: initial elements
@@ -29,22 +29,22 @@ def standard(population, change, selector, crosser, fitness, selections, remains
     :rtype: List[Tuple[object, int]]
     """
     attempts = change
+    routine = phases.routine if mutator is None else phases.routine_mutation
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts:
-        generation = selection(population, selector, selections)
-        generation = bit.cross(generation, crosser)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, remains)
-        if population[0][1] >= generation[0][1]:
+        for _ in range(selections):
+            routine(population, selector, crosser, fitness, mutator, len(population), population[len(population)-1][1], distributor)
+        best = population[0][1]
+        population = death(population, remains)
+        if population[0][1] >= best:
             attempts -= 1
         else:
             attempts = change
-        population = generation
     return population
 
 
-def expansor(population, selector, crosser, fitness, ratio, iterations=math.inf, max_element=math.inf):
+def expansor(population, selector, crosser, fitness, ratio, iterations=math.inf, max_element=math.inf, distributor=None, mutator=None):
     """ Expands the population until a max number of elements or for a limited number of iteraration.
 
     :param population: initial elements
@@ -65,20 +65,19 @@ def expansor(population, selector, crosser, fitness, ratio, iterations=math.inf,
     :rtype: List[Tuple[object, int]]
     """
     number = int(len(population) * ratio)
+    routine = phases.routine if mutator is None else phases.routine_mutation
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) < max_element:
-        generation = selection(population, selector, number)
-        generation = bit.cross(generation, crosser)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, number)
+        for _ in range(number):
+            routine(population, selector, crosser, fitness, mutator, len(population), population[len(population)-1][1], distributor)
+        population = death(population, number)
         iterations -= 1
         number = int(number * ratio)
-        population = generation
     return population
 
 
-def restrictor(population, selector, crosser, fitness, ratio, iterations=math.inf, min_element=0):
+def restrictor(population, selector, crosser, fitness, ratio, iterations=math.inf, min_element=0, distributor=None, mutator=None):
     """ Reduce the population until a min number of elements or for a limited number of iteraration.
 
     :param population: initial elements
@@ -99,21 +98,20 @@ def restrictor(population, selector, crosser, fitness, ratio, iterations=math.in
     :rtype: List[Tuple[object, int]]
     """
     number = int(len(population) * ratio)
+    routine = phases.routine if mutator is None else phases.routine_mutation
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) > min_element:
-        generation = selection(population, selector, number)
-        generation = bit.cross(generation, crosser)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, number)
+        for _ in range(number):
+            routine(population, selector, crosser, fitness, mutator, len(population), population[len(population)-1][1], distributor)
+        population = death(population, number)
         iterations -= 1
         number = int(number * ratio)
-        population = generation
     return population
 
 
 def dynamic(population, change, selector, crosser, fitness, selection_ratio, death_ratio, min_element=0,
-            max_element=math.inf):
+            max_element=math.inf, distributor=None, mutator=None):
     """Version of the algorithm where numbers of elements selected and discarted changes dinamically.
 
     :param population: initial elements
@@ -138,20 +136,20 @@ def dynamic(population, change, selector, crosser, fitness, selection_ratio, dea
     :rtype: List[Tuple[object, int]]
     """
     attempts = change
+    routine = phases.routine if mutator is None else phases.routine_mutation
     selections = int(len(population) * selection_ratio)
     remains = int(len(population) * death_ratio)
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts and min_element < len(population) < max_element:
-        generation = selection(population, selector, selections)
-        generation = bit.cross(generation, crosser)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, remains)
-        if population[0][1] >= generation[0][1]:
+        for _ in range(selections):
+            routine(population, selector, crosser, fitness, mutator, len(population), population[len(population)-1][1], distributor)
+        population = death(population, remains)
+        best = population[0][1]
+        if population[0][1] >= best:
             attempts -= 1
         else:
             attempts = change
         selections = int(selections * selection_ratio)
         remains = int(remains * death_ratio)
-        population = generation
     return population

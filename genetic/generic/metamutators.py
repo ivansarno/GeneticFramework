@@ -1,7 +1,7 @@
 from typing import Callable
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Functions that return a complex mutator from  basic mutators"""
 
 
@@ -14,7 +14,6 @@ def multimutator(mutator: Callable[[object, int], type(None)], distributor: Call
     :param distributor: distributor that select random genes to mutate
     :return: new mutator that takes the number of elements to mutate as parameter instead of the index of a single element
     """
-
     def f(element, number):
         for _ in range(number):
             mutator(element, distributor(len(element)))
@@ -29,7 +28,6 @@ def optional_mutator(mutator: Callable[[object, int], type(None)], flip: Callabl
     :param period: period of flip
     :return: new mutator that apply mutation randomly
     """
-
     def f(element, index):
         if flip(period):
             mutator(element, index)

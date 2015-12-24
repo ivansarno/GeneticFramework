@@ -1,9 +1,9 @@
 import math
 
-from genetic.generic.phases import selection, cross, mutation, fit, death
+from genetic.generic.phases import fit, death, standard_routine
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Abstract Genetic Algorithm"""
 
 
@@ -35,16 +35,14 @@ def standard(population, change, selector, distributor1, distributor2, fitness, 
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts:
-        generation = selection(population, selector, selections)
-        generation = cross(generation, distributor1)
-        generation = mutation(generation, distributor2, mutator)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, remains)
-        if population[0][1] >= generation[0][1]:
+        for _ in range(selections):
+            standard_routine(population, selector, distributor1, distributor2, fitness, mutator, len(population), population[len(population) - 1][1])
+        best = population[0][1]
+        population = death(population, remains)
+        if population[0][1] >= best:
             attempts -= 1
         else:
             attempts = change
-        population = generation
     return population
 
 
@@ -77,14 +75,11 @@ def expansor(population, selector, distributor1, distributor2, fitness, mutator,
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) < max_element:
-        generation = selection(population, selector, number)
-        generation = cross(generation, distributor1)
-        generation = mutation(generation, distributor2, mutator)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, number)
+        for _ in range(number):
+            standard_routine(population, selector, distributor1, distributor2, fitness, mutator, len(population), population[len(population) - 1][1])
+        population = death(population, number)
         iterations -= 1
         number = int(number * ratio)
-        population = generation
     return population
 
 
@@ -117,14 +112,11 @@ def restrictor(population, selector, distributor1, distributor2, fitness, mutato
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while iterations and len(population) > min_element:
-        generation = selection(population, selector, number)
-        generation = cross(generation, distributor1)
-        generation = mutation(generation, distributor2, mutator)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, number)
+        for _ in range(number):
+            standard_routine(population, selector, distributor1, distributor2, fitness, mutator, len(population), population[len(population) - 1][1])
+        population = death(population, number)
         iterations -= 1
         number = int(number * ratio)
-        population = generation
     return population
 
 
@@ -163,16 +155,14 @@ def dynamic(population, change, selector, distributor1, distributor2, fitness, m
     population = fit(population, fitness)
     population.sort(key=lambda x: x[1], reverse=True)
     while attempts and min_element < len(population) < max_element:
-        generation = selection(population, selector, selections)
-        generation = cross(generation, distributor1)
-        generation = mutation(generation, distributor2, mutator)
-        generation = fit(generation, fitness)
-        generation = death(generation + population, remains)
-        if population[0][1] >= generation[0][1]:
+        for _ in range(selections):
+            standard_routine(population, selector, distributor1, distributor2, fitness, mutator, len(population), population[len(population) - 1][1])
+        population = death(population, remains)
+        best = population[0][1]
+        if population[0][1] >= best:
             attempts -= 1
         else:
             attempts = change
         selections = int(selections * selection_ratio)
         remains = int(remains * death_ratio)
-        population = generation
     return population

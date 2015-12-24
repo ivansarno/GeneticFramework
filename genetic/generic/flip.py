@@ -1,7 +1,7 @@
 import random
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Fuction that return a random bool"""
 
 

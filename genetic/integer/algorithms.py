@@ -3,7 +3,7 @@ import math
 from genetic.generic import algorithms as gen
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.0'
+__version__ = 'V.1'
 __doc__ = """algorithm's versions specific for integer"""
 
 

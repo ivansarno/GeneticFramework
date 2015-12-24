@@ -1,7 +1,7 @@
 from bitstring import BitArray
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """functions that combine 2 BitArray"""
 
 

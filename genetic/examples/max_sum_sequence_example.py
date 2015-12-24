@@ -2,7 +2,7 @@ from genetic.integer import algorithms, mutators, initializers
 from genetic.generic import distributors, selectors
 
 __author__ = 'ivansarno'
-__version__ = 'V.1.1'
+__version__ = 'V.1'
 __doc__ = """Example of algorithm how find a sequence with max value from random integer sequences"""
 
 
