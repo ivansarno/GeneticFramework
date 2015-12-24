@@ -1,12 +1,18 @@
-from typing import Callable
+from typing import Callable, List
 
 __author__ = 'ivansarno'
 __version__ = 'V.1'
 __doc__ = """Functions that return a complex mutator from  basic mutators"""
 
+######
+# type definition
+Mutator = Callable[[object, int], type(None)]
+Distributor = Callable[[int], int]
+Flip = Callable[[int], bool]
+#####
 
-def multimutator(mutator: Callable[[object, int], type(None)], distributor: Callable[[int], int]) \
-        -> Callable[[object, int], type(None)]:
+
+def multimutator(mutator: Mutator, distributor: Distributor) -> Mutator:
     """ Return a mutator that apply a basic mutator to multiple random genes, number of mutations is passed by
     instead of the index of a single element.
 
@@ -20,8 +26,7 @@ def multimutator(mutator: Callable[[object, int], type(None)], distributor: Call
     return f
 
 
-def optional_mutator(mutator: Callable[[object, int], type(None)], flip: Callable[[int], bool], period: int) \
-        -> Callable[[object, int], type(None)]:
+def optional_mutator(mutator: Mutator, flip: Flip, period: int) -> Mutator:
     """ Return a mutator that applies a basic mutator  with probability determined by the function flip.
     :param mutator: basic mutator
     :param flip: function thar returns a random bool
@@ -34,7 +39,7 @@ def optional_mutator(mutator: Callable[[object, int], type(None)], flip: Callabl
     return f
 
 
-def complex_mutator(mutator_list: list, distributor: Callable[[int], int]) -> Callable[[object, int], type(None)]:
+def complex_mutator(mutator_list: List[Mutator], distributor: Distributor) -> Mutator:
     """ Return a complex mutator that applay a random basic mutator from a list.
     :param mutator_list: list of basic mutator
     :param distributor: return a random index to select a mutator from mutator list
