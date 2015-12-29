@@ -1,3 +1,3 @@
 __author__ = 'ivansarno'
-__version__ = 'V.1'
-__doc__ = """Collection of algoritms and utility for genetic algorithms"""
+__version__ = 'V.2'
+__doc__ = """Collection of algorithms and utility for genetic algorithms"""

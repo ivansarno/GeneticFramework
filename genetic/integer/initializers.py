@@ -1,13 +1,20 @@
 import random
-from typing import List
+from typing import List, Tuple
+
+from genetic.generic.initializers import elements2population
 
 __author__ = 'ivansarno'
-__version__ = 'V.1'
-__doc__ = """funtions to produces a random intial population"""
+__version__ = 'V.2'
+__doc__ = """functions to produces a random initial population"""
+
+###
+# type definition
+Population = List[Tuple[object, int]]
+###
 
 
-def rand_init(elements: int, length: int, max_value: int, min_value: int = 0) -> List[List[int]]:
-    """ Return a population conposed by random elements.
+def rand_init(elements: int, length: int, fitness, max_value: int, min_value: int = 0) -> Population:
+    """ Return a population composed by random elements.
 
     :param elements: number of elements
     :param length: number of int for element
@@ -21,4 +28,4 @@ def rand_init(elements: int, length: int, max_value: int, min_value: int = 0) ->
         for j in range(length):
             new.append(random.randint(min_value, max_value - 1))
         population.append(new)
-    return population
+    return elements2population(population, fitness)

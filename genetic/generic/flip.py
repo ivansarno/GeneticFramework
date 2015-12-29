@@ -1,8 +1,8 @@
 import random
 
 __author__ = 'ivansarno'
-__version__ = 'V.1'
-__doc__ = """Fuction that return a random bool"""
+__version__ = 'V.2'
+__doc__ = """Functions that return a random bool"""
 
 
 def flip_negative(period: int) -> bool:

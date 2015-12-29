@@ -1,8 +1,8 @@
 import random
 from typing import Tuple
 __author__ = 'ivansarno'
-__version__ = 'V.1'
-__doc__ = """Funtcions to select a random couple of element from a reverse ordered list, returns 2 indexes"""
+__version__ = 'V.2'
+__doc__ = """Functions to select a random couple of element from a reverse ordered list, returns 2 indexes"""
 
 
 def random_sel(max_value: int) -> Tuple[int, int]:

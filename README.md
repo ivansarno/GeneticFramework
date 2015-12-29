@@ -1,6 +1,8 @@
 # GeneticFramework
 Framework for genetic algorithm in Python
 
+# This project is in the experimental stage
+
 the framework is composed by:
 
 -abstract genetic algorithms

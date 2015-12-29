@@ -2,10 +2,11 @@ from typing import List, Tuple, Callable
 from bitstring import BitArray
 
 __author__ = 'ivansarno'
-__version__ = 'V.1'
+__version__ = 'V.2'
 __doc__ = """Phases specific for algorithms on BitArray"""
 
-
+#####
+# deprecated code
 def cross(couples: List[Tuple[BitArray, BitArray]], crosser: Callable[[BitArray, BitArray], BitArray]) -> list:
     """ Create a list of element from a list of couples by crossover.
 
@@ -18,7 +19,6 @@ def cross(couples: List[Tuple[BitArray, BitArray]], crosser: Callable[[BitArray,
         new = crosser(c[0], c[1])
         generation.append(new)
     return generation
-
 
 def routine_mutation(population, selector, crosser, fitness, mutator, elements, minimum, distributor):
     # selection
@@ -46,3 +46,5 @@ def routine(population, selector, crosser, fitness, mutator, elements, minimum, 
     value = fitness(new)
     if value > minimum:
         population.append((new, value))
+
+#######

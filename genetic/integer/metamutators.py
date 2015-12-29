@@ -1,7 +1,7 @@
 from typing import Callable, List
 
 __author__ = 'ivansarno'
-__version__ = 'V.1'
+__version__ = 'V.2'
 __doc__ = """Functions that return a complex mutator from  basic mutators, specific for integers"""
 
 ######
@@ -19,7 +19,8 @@ def multimutator(mutator: IntMutator, distributor: Distributor) -> Mutator:
 
     :param mutator: basic mutator
     :param distributor: distributor that select random genes to mutate
-    :return: new mutator that takes the number of elements to mutate as parameter instead of the index of a single element
+    :return: new mutator that takes the number of elements to mutate as parameter instead of
+    the index of a single element
     """
 
     def f(element, number, max_value, min_value):
@@ -30,7 +31,7 @@ def multimutator(mutator: IntMutator, distributor: Distributor) -> Mutator:
 
 
 def optional_mutator(mutator: IntMutator, flip: Flip, period: int) -> Mutator:
-    """ Return a mutator that applies a basic mutator  with probability determined by the function fprob.
+    """ Return a mutator that applies a basic mutator  with probability determined by the flip function.
     :param mutator: basic mutator
     :param flip: function thar returns a random bool
     :param period: period of flip function
@@ -45,10 +46,10 @@ def optional_mutator(mutator: IntMutator, flip: Flip, period: int) -> Mutator:
 
 
 def complex_mutator(mutator_list: List[IntMutator], distributor: Distributor) -> Mutator:
-    """ Return a complex mutator that applay a random basic mutator from a list.
+    """ Return a complex mutator that apply a random basic mutator from a list.
     :param mutator_list: list of basic mutator
     :param distributor: return a random index to select a mutator from mutator list
-    :return: complex mutator that applay a random basic mutator from a list
+    :return: complex mutator that apply a random basic mutator from a list
     """
 
     def f(element, index, max_value, min_value):
