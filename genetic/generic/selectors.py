@@ -1,5 +1,6 @@
 import random
-from typing import Tuple
+from typing import Tuple, List
+
 __author__ = 'ivansarno'
 __version__ = 'V.2'
 __doc__ = """Functions to select a random couple of element from a reverse ordered list, returns 2 indexes"""
@@ -17,3 +18,17 @@ def dif_random_sel(max_value: int) -> Tuple[int, int]:
     while first == second:
         second = random.randint(0, max_value - 1)
     return second
+
+
+def contigue_multiselector(population: List[Tuple[object, int]]) -> List[Tuple[object, object]]:
+    generation = []
+    for i in range(0,len(population), 2):
+        generation.append((population[i][0], population[i+1], [0]))
+    return generation
+
+
+def reverse_multiselector(population: List[Tuple[object, int]]) -> List[Tuple[object, object]]:
+    generation = []
+    for i in range(0,len(population)//2):
+        generation.append((population[i][0], population[-i-1][0]))
+    return generation
