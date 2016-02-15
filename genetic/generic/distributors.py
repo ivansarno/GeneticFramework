@@ -9,7 +9,7 @@ def random_dist(max_value: int) -> int:
     return random.randint(0, max_value - 1)
 
 
-def centre_dist(max_value: int, breadth: int =3) -> int:
+def centre_dist(max_value: int, breadth: int=3) -> int:
     """ Return a random index in the central part of the sequence.
     :param breadth: size of central part = 1/breadth of sequence length
     """
