@@ -59,6 +59,7 @@
     <Compile Include="Reproduction.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="Evolution.fs" />
+    <Compile Include="BuiltIn.fs" />
     <None Include="DiscreteKnapsack.fsx" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿module GeneticFramework.Generic.Evolution
+﻿///Generic Evolution algorithms
+module GeneticFramework.Generic.Evolution
 
 let private merge population generation size =
     let next = Array.append population (Seq.toArray generation)

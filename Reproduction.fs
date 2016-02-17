@@ -14,10 +14,10 @@ let stdReproduction crosser selector  fitness mutator = fun population ->
     let subroutine = crosser >> mutation mutator >> fit fitness
     (Seq.map subroutine couples) |> Seq.collect (fun (x,y) -> seq {yield x; yield y})
 
-///Reproduction routine that discards the elements with lower value to the minimum value of the previous generation
-let lazyReproduction crosser selector  fitness mutator = fun population ->
+///Take a reproduction routine and return a routine that discards the elements 
+///with lower value to the minimum value of the previous generation
+let lazyReproduction reproduction = fun population ->
     let minimum: int = snd(Array.last population)
-    let repr = stdReproduction crosser selector  fitness mutator
-    Seq.filter (fun (x,y) -> y > minimum) (repr population) 
+    Seq.filter (fun (x,y) -> y > minimum) (reproduction population) 
         
     
