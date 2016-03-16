@@ -1,4 +1,23 @@
-﻿#load "Reproduction.fs" "Selectors.fs" "Distributors.fs" "GenericCrossers.fs" 
+﻿(*
+    GeneticFramework
+
+    Copyright 2015 Ivan Sarno
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*)
+//version V.1 beta
+
+#load "Reproduction.fs" "Selectors.fs" "Distributors.fs" "GenericCrossers.fs" 
 #load "Evolution.fs" "IntegerMutators.fs" "Utils.fs"
 open GeneticFramework.Generic.Reproduction 
 open GeneticFramework.Generic.Selectors
@@ -10,7 +29,7 @@ open GeneticFramework.Generic.Utils
 open GeneticFramework.Integer.Utils
 
 (*This is an example of how use GeneticFramework to build an algorithm to solve a problem.
-I build custom various functions, using only basic elements in the framework, to solve the Discrete Knapsack problem.*)
+I build various custom functions, using only basic elements in the framework, to solve the Discrete Knapsack problem.*)
  
 //problem variables
 let objects = 12
@@ -25,7 +44,7 @@ let fitness (element: int[]) =
             let mutable value = 0
             let mutable waigth = 0
             for i in 0..objects-1 do
-                value <- value + (element.[i] *values.[i])
+                value <- value + (element.[i] * values.[i])
                 waigth <- waigth + (waigths.[i] * element.[i])
             if waigth <= maxWaigth then value else maxWaigth - waigth;;
 

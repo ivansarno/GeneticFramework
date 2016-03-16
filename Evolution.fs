@@ -1,4 +1,23 @@
-﻿///Generic Evolution algorithms
+﻿(*
+    GeneticFramework
+
+    Copyright 2015 Ivan Sarno
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*)
+//version V.1 beta
+
+///Generic Evolution algorithms
 module GeneticFramework.Generic.Evolution
 
 let private merge population generation size =
@@ -13,7 +32,7 @@ let private sortMerge population generation size =
 
 ///Standard evolution algorithm of the framework,
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
-///if best element not change for changes consecutive iterations the algorithms end.
+///if best element not change for "changes" consecutive iterations the algorithms end.
 ///for optimize this algorithm use a lazy reproduction
 let eliteEvolution reproduction changes population =
     let rec routine (current: ('a*int) []) attempts =
@@ -27,7 +46,7 @@ let eliteEvolution reproduction changes population =
         
 
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
-///if the sum of value of all elements of the population not change for changes consecutive iterations the algorithms end.
+///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
 ///for optimize this algorithm use a lazy reproduction
 let grupEvolution reproduction changes population =
     let rec routine current max attempts =
