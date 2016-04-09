@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.1 beta
+//version V.0.1
 
 ///Functions to select a random index of a vector
 module GeneticFramework.Generic.Distributors

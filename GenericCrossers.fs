@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.1 beta
+//version V.0.1
 
 ///Crossover operators
 module GeneticFramework.Generic.Crossers
@@ -51,3 +51,40 @@ let doubleCross distributor (parent1, parent2) =
     let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
     let son2 = Array.append (Array.append (parent2.[..pivot1]) (parent1.[pivot1+1..pivot2])) (parent2.[pivot2+1..])
     (son2, son1);;
+    
+//-------------------Prototypes-----------------------------------------------------------------------
+
+//same length  
+let private proto1 period (parent1, parent2) = 
+   Array.unzip [| for (x,y) in Array.zip parent1 parent2 -> if rand.Next() % period = 0 then (y,x) else (x,y) |]
+ 
+//same length  
+let private proto2 (parent1, parent2) = proto1 (rand.Next(Array.length parent1)) (parent1, parent2)
+
+//same length
+let private proto3 breadth (parent1, parent2) =
+    let pivot1 = int(float(Array.length parent1) * breadth / 2.0)
+    let pivot2 = Array.length parent2 - pivot1
+    let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
+    let son2 = Array.append (Array.append (parent2.[..pivot1]) (parent1.[pivot1+1..pivot2])) (parent2.[pivot2+1..])
+    (son2, son1)
+
+
+//same length   
+let private proto4 swaps (parent1, parent2) =
+    let son1 = Array.copy parent1
+    let son2 = Array.copy parent1
+    for _ in swaps do
+        let index = rand.Next(Array.length parent1) 
+        let temp = son1.[index]
+        son1.[index] <- son2.[index]
+        son2.[index] <- temp
+    (son1, son2)
+
+//same length 
+let private proto5 step (parent1, parent2: 'a[]) =
+    let f i = i % (2*step) < step 
+    Array.unzip [|for i in 0..Array.length parent1-1 -> if f i then (parent1.[i], parent2.[i]) else (parent2.[i], parent1.[i])|]
+    
+        
+    

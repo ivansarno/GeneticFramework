@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.1 beta
+//version V.0.1
 
 ///Generic Evolution algorithms
 module GeneticFramework.Generic.Evolution
@@ -28,6 +28,11 @@ let private sortMerge population generation size =
      let next = Array.append population (Seq.toArray generation)
      Array.sortInPlaceBy (fun (x,y) -> -y) next
      if size > 0 then Array.sub next 0 size else next;;
+     
+let private protoFM population generation size =
+    let _,min = Array.last population 
+    let bests = Seq.filter (fun (_,y) -> y > min) generation
+    sortMerge population bests size
 
 
 ///Standard evolution algorithm of the framework,
@@ -81,7 +86,18 @@ let limitExpander reproduction limit population =
 ///Expands the population of a factor
 let percentExpander reproduction factor population =
     let limit = int(factor * float(Array.length population))           
-    limitExpander reproduction limit population;;      
-                
-
-        
+    limitExpander reproduction limit population;;
+    
+//-------------------Prototypes-----------------------------------------------------------------------
+    
+let private proto1 evolution initializer elements grups =
+    let first (x: 'T []) = x.[0] 
+    [|for _ in grups ->  first(evolution (initializer elements))|]
+    
+let private proto2 reproduction split stop population =
+    let rec routine population =
+        let toNext, toRep: 'a seq * 'a seq = split population
+        let generation = Array.ofSeq (Seq.append toNext (reproduction toRep))
+        if stop generation then generation else routine generation
+    routine population
+    
