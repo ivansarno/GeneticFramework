@@ -22,66 +22,66 @@ module GeneticFramawork.Integer.Mutators
 
     let private rand = System.Random();;
 
-    let addModMut distributor max_value element =
-        let index = distributor(Array.length element)
-        element.[index] <- (element.[index] + rand.Next(0, max_value)) % max_value;;
+    let addModMut maxValue element =
+        let index = rand.Next(Array.length element)
+        element.[index] <- (element.[index] + rand.Next(0, maxValue)) % maxValue;;
 
-    let subModMut distributor max_value element =
-        let index = distributor(Array.length element)
-        element.[index] <- (element.[index] - rand.Next(0, max_value)) % max_value;;
+    let subModMut maxValue element =
+        let index = rand.Next(Array.length element)
+        element.[index] <- (element.[index] - rand.Next(0, maxValue)) % maxValue;;
          
 
-    let mulModMut distributor max_value element =
-        let index = distributor(Array.length element)
-        element.[index] <- (element.[index] * rand.Next(0, max_value)) % max_value;;
+    let mulModMut maxValue element =
+        let index = rand.Next(Array.length element)
+        element.[index] <- (element.[index] * rand.Next(0, maxValue)) % maxValue;;
 
     
-    let addMut distributor min_value max_value element =
-        let index = distributor(Array.length element)
-        let num = (element.[index] + rand.Next(min_value, max_value))
-        element.[index] <- if num > max_value then max_value else num;;
+    let addMut minValue maxValue element =
+        let index = rand.Next(Array.length element)
+        let num = (element.[index] + rand.Next(minValue, maxValue))
+        element.[index] <- if num > maxValue then maxValue else num;;
 
-    let subMut distributor min_value max_value element =
-        let index = distributor(Array.length element)
-        let num = (element.[index] - rand.Next(min_value, max_value))
-        element.[index] <- if num < min_value then min_value else num;;
+    let subMut minValue maxValue element =
+        let index = rand.Next(Array.length element)
+        let num = (element.[index] - rand.Next(minValue, maxValue))
+        element.[index] <- if num < minValue then minValue else num;;
          
 
-    let mulMut distributor min_value max_value element =
-        let index = distributor(Array.length element)
-        let num = (element.[index] * rand.Next(min_value, max_value))
-        if num > max_value then element.[index] <- max_value
-        elif num < min_value then element.[index] <- min_value
+    let mulMut minValue maxValue element =
+        let index = rand.Next(Array.length element)
+        let num = (element.[index] * rand.Next(minValue, maxValue))
+        if num > maxValue then element.[index] <- maxValue
+        elif num < minValue then element.[index] <- minValue
         else element.[index] <- num;;
 
-    let divMut distributor min_value max_value element =
-        let index = distributor(Array.length element)
-        let num = (element.[index] / rand.Next(min_value, max_value))
-        if num > max_value then element.[index] <- max_value
-        elif num < min_value then element.[index] <- min_value
+    let divMut minValue maxValue element =
+        let index = rand.Next(Array.length element)
+        let num = (element.[index] / rand.Next(minValue, maxValue))
+        if num > maxValue then element.[index] <- maxValue
+        elif num < minValue then element.[index] <- minValue
         else element.[index] <- num;;
 
     
-    let andMut distributor min_value max_value element =
-        let index = distributor(Array.length element) 
-        element.[index] <- (element.[index] &&& rand.Next(min_value, max_value)) % max_value;;
+    let andMut minValue maxValue element =
+        let index = rand.Next(Array.length element) 
+        element.[index] <- (element.[index] &&& rand.Next(minValue, maxValue)) % maxValue;;
 
-    let orMut distributor min_value max_value element =
-        let index = distributor(Array.length element) 
-        element.[index] <- (element.[index] ||| rand.Next(min_value, max_value)) % max_value;;
+    let orMut minValue maxValue element =
+        let index = rand.Next(Array.length element) 
+        element.[index] <- (element.[index] ||| rand.Next(minValue, maxValue)) % maxValue;;
 
-    let xorMut distributor min_value max_value element =
-        let index = distributor(Array.length element) 
-        element.[index] <- (element.[index] ^^^ rand.Next(min_value, max_value)) % max_value;;
+    let xorMut minValue maxValue element =
+        let index = rand.Next(Array.length element) 
+        element.[index] <- (element.[index] ^^^ rand.Next(minValue, maxValue)) % maxValue;;
 
-    let negMut distributor element =
-        let index = distributor(Array.length element)
+    let negMut element =
+        let index = rand.Next(Array.length element)
         element.[index] <- -element.[index];;
 
-    let negModMut distributor modulus element =
-        let index = distributor(Array.length element) 
+    let negModMut modulus element =
+        let index = rand.Next(Array.length element) 
         element.[index] <- -element.[index] % modulus ;;
 
-    let replMut distributor min_value max_value element =
-        let index = distributor(Array.length element) 
-        element.[index] <- rand.Next(min_value, max_value) % max_value;;
+    let replMut minValue maxValue element =
+        let index = rand.Next(Array.length element) 
+        element.[index] <- rand.Next(minValue, maxValue) % maxValue;;

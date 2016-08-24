@@ -22,30 +22,28 @@ module GeneticFramework.Generic.Crossers
 
 let private rand = System.Random();;
 
-///Single point cross, distributor fun select a random pivot
-let singleCross distributor ((parent1, parent2): ('a[]*'a[])) =
-    let pivot = distributor((Array.length parent1))
+///Single point cross
+let singleCross ((parent1, parent2): ('a[]*'a[])) =
+    let pivot = rand.Next((Array.length parent1))
     let son1 = Array.append (parent1.[..pivot]) (parent2.[pivot+1..])
     let son2 = Array.append (parent2.[..pivot]) (parent1.[pivot+1..])
     (son1, son2);;
 
 ///Single point cross on elements of different size, 
-///distributor fun selects a random pivot
-let difSingleCross distributor (parent1, parent2) =
+let difSingleCross (parent1, parent2) =
     let size = min (Array.length parent1) (Array.length parent2)
-    let pivot = distributor size
+    let pivot = rand.Next size
     let son1 = Array.append (parent1.[..pivot]) (parent2.[pivot+1..])
     let son2 = Array.append (parent2.[..pivot]) (parent1.[pivot+1..])
     (son2, son1);;
 
 ///Double point cross on elements of different size, 
-///distributor fun selects a random pivot
-let doubleCross distributor (parent1, parent2) =
+let doubleCross (parent1, parent2) =
     let size = min (Array.length parent1) (Array.length parent2)
-    let x = distributor size
-    let mutable y = distributor size
+    let x = rand.Next size
+    let mutable y = rand.Next size
     while x=y do
-        y <- distributor size
+        y <- rand.Next size
     let pivot1 = min x y
     let pivot2 = max x y
     let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])

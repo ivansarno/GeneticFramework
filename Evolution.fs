@@ -101,3 +101,79 @@ let private proto2 reproduction split stop population =
         if stop generation then generation else routine generation
     routine population
     
+//-------------------SemplifiedAlgorithms-----------------------------------------------------------------------
+
+let private mutation mutator (elm1, elm2) = 
+    mutator elm1
+    mutator elm2
+    (elm1, elm2);;
+
+let private fit (fitness:'a -> int) (elm1, elm2) = ((elm1, fitness elm1), (elm2, fitness elm2))
+
+///Standard reproduction routine
+let private stdreproduction crosser selector  fitness mutator = fun population ->
+    let couples = selector population 
+    let subroutine = crosser >> mutation mutator >> fit fitness
+    (Seq.map subroutine couples) |> Seq.collect (fun (x,y) -> seq {yield x; yield y})
+
+///Take a reproduction routine and return a routine that discards the elements 
+///with lower value to the minimum value of the previous generation
+let lazyReproduction reproduction = fun population ->
+    let minimum: int = snd(Array.last population)
+    Seq.filter (fun (x,y) -> y > minimum) (reproduction population) 
+
+
+///Standard evolution algorithm of the framework,
+///For each iteration take the best elements of the population and the new generation(implements elitism)
+///if best element not change for "changes" consecutive iterations the algorithms end.
+let SeliteEvolution crosser selector fitness mutator changes population =
+    let reproduction = lazyReproduction (stdreproduction crosser selector mutator fitness)
+    let rec routine (current: ('a*int) []) attempts =
+        if attempts = 0 then current
+        else
+            let max = snd(current.[0])
+            let next = sortMerge population (reproduction current) (Array.length population)
+            if snd(next.[0]) > max then routine next changes
+            else routine next (attempts-1) in
+    routine (Array.sortBy (fun (x,y) -> -y) population) changes;;
+        
+
+///For each iteration take the best elements of the population and the new generation(implements elitism)
+///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
+let SgrupEvolution crosser selector fitness mutator changes population =
+    let reproduction = lazyReproduction (stdreproduction crosser selector mutator fitness)
+    let rec routine current max attempts =
+        if attempts = 0 then current
+        else
+            let next = sortMerge population (reproduction current) (Array.length population)
+            let sum = Array.sumBy (fun (x,y) -> y) current
+            if sum > max then routine next sum changes
+            else routine next max (attempts-1) in
+    let sum = Array.sumBy (fun (x,y) -> y) population
+    routine population sum changes;;
+
+
+///Expands the population for count iterations
+let ScountExpander crosser selector fitness mutator count population = 
+    let reproduction = stdreproduction crosser selector mutator fitness
+    let rec routine current count=
+        if count = 0 then current
+        else
+            let next = merge population (reproduction current) -1
+            routine next (count-1) in
+    routine population count;;
+
+///Expands the population until limit (new size)
+let SlimitExpander crosser selector fitness mutator limit population = 
+    let reproduction = stdreproduction crosser selector mutator fitness
+    let rec routine current =
+        if limit <= (Array.length current) then current
+        else
+            let next = merge population (reproduction current) -1
+            routine next in
+    routine population;;
+        
+///Expands the population of a factor
+let SpercentExpander crosser selector fitness mutator factor population =
+    let limit = int(factor * float(Array.length population))           
+    SlimitExpander crosser selector fitness mutator limit population;;
