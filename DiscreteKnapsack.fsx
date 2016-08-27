@@ -17,11 +17,9 @@ limitations under the License.
 *)
 //version V.0.1
 
-#load "Reproduction.fs" "Selectors.fs" "Distributors.fs" "GenericCrossers.fs" 
+#load "Selectors.fs" "GenericCrossers.fs" 
 #load "Evolution.fs" "IntegerMutators.fs" "Utils.fs"
-open GeneticFramework.Generic.Reproduction 
 open GeneticFramework.Generic.Selectors
-open GeneticFramework.Generic.Distributors
 open GeneticFramework.Generic.Crossers
 open GeneticFramework.Generic.Evolution
 open GeneticFramawork.Integer.Mutators
@@ -62,12 +60,8 @@ let changes = 15 //number of iterations of the algorithms without which the solu
 
 //Algorithms configuration:
 //mutation configuration
-let mutator = addModMut randDist maxSel
-//reproduction configuration
-(*the reproduction routines use the standard cross operation with a single random pivot,
-the selection operation choose 2 random elements from the population.*)
-let repr = stdReproduction  (singleCross randDist) randSel fitness mutator
-let repr2 = stdReproduction  (singleCross randDist) randSel fitness2 mutator
+let mutator = addModMut maxSel
+
 (*to improve clarity fix some elements of the pipelines:*)
 //initializes the population with random elements and fits
 let init = randInit 0 fitness maxSel objects 
@@ -75,28 +69,31 @@ let init2 = randInit 0 fitness2 maxSel objects
 //a list of single element of only 0 
 let zero = [(Array.zeroCreate 12: int[])]
 
-let expander2 = limitExpander repr2 20 //expand the population until 20 elements using repr2
-let expander = limitExpander repr 20 //expand the population until 20 elements using repr
-let res1 = restrictor 1: (int[] * int)[]->(int[] * int)[] //restrict the population at 1 element
-let res5 = restrictor 5: (int[] * int)[]->(int[] * int)[] //restrict the population at 5 elements
+//evolution algorithms configuration
+let expander2 = limitExpander singleCross randSel mutator fitness2 20 //expand the population until 20 elements using fitness2
+let expander = limitExpander singleCross randSel mutator fitness 20 //expand the population until 20 elements using fitness
+let restrictTo1 = restrictor 1: (int[] * int)[]->(int[] * int)[] //restrict the population at 1 element
+let restrictTo5 = restrictor 5: (int[] * int)[]->(int[] * int)[] //restrict the population at 5 elements
+let evolution1 = eliteEvolution singleCross randSel mutator fitness changes 
+let evolution2 = eliteEvolution singleCross randSel mutator fitness2 changes 
 
 //algorithms:
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the first Heuristic, and restrict the population at 1 element*)
-let solution1 = res1 <| (eliteEvolution repr changes <| init elements);;
+let solution1 = restrictTo1 <| (evolution1 <| init elements);;
 (*This algorithm start from a list of a single array initialized to 0, expand the population
 until populationSize, applay the standard genetic algorithm with using the first Heuristic,
 and restrict the population at 1 element*)
-let solution2 = res1 <| (eliteEvolution  repr changes <| (expander <| (elements2Population fitness <| zero)));;
+//let solution2 = restrictTo1 <| (evolution1 <| (expander <| (elements2Population fitness <| zero)));;
 
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic, restrict the population at 1 element, and reevaluate this to compare with other solutions*)
-let solution3 = refit fitness <| (res1 <| (eliteEvolution repr changes <| init elements));;
+let solution3 = refit fitness <| (restrictTo1 <| (evolution1 <| init elements));;
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
 until populationSize, applay the standard genetic algorithm with using the second Heuristic,
 restrict the population at 1 element, and reevaluate this to compare with other solutions*)
-let solution4 = refit fitness <| (res1 <| (eliteEvolution  repr changes <| (expander <| (elements2Population fitness <| zero))));;
+let solution4 = refit fitness <| (restrictTo1 <| (evolution1<| (expander <| (elements2Population fitness <| zero))));;
 
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic. The second heuristc allow  not accepttables instances,
@@ -104,7 +101,7 @@ therefore the population is reevaluated with the first heuristic, restricted at 
 Therefore the algorithms expand the population until populationSize and apply applay the standard genetic algorithm
 with using the first Heuristic to obtain the bests acceptables instances from not acceptable population.
 Finally restrict the population at 1 element*) 
-let solution5 = res1 <| (eliteEvolution repr changes <| (res5 <| (refit fitness <| (eliteEvolution repr2 changes <| init2 elements))));;
+let solution5 = restrictTo1 <| (evolution1<| (restrictTo5 <| (refit fitness <| (evolution2 <| init2 elements))));;
 
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
@@ -114,4 +111,4 @@ restricted at 5 elements.
 Therefore the algorithms expand the population until populationSize and apply applay the standard genetic algorithm
 with using the first Heuristic to obtain the best acceptables instances from not acceptable population.
 Finally restrict the population at 1 element*)
-let solution6 = res1 <| (eliteEvolution repr changes <| (res5 <| (refit fitness <| (eliteEvolution repr2 changes <| (expander2 <| (elements2Population fitness2 <| zero))))));;
+let solution6 = restrictTo1 <| (evolution1 <| (restrictTo5 <| (refit fitness <| (evolution2 <| (expander2 <| (elements2Population fitness2 <| zero))))));;
