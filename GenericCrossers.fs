@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.0.1
+//version V.0.2 freeze
 
 ///Crossover operators
 module GeneticFramework.Generic.Crossers
@@ -24,43 +24,57 @@ let private rand = System.Random();;
 
 ///Single point cross
 let singleCross ((parent1, parent2): ('a[]*'a[])) =
-    let pivot = rand.Next((Array.length parent1))
+    let pivot = rand.Next(Array.length parent1)
     let son1 = Array.append (parent1.[..pivot]) (parent2.[pivot+1..])
     let son2 = Array.append (parent2.[..pivot]) (parent1.[pivot+1..])
     (son1, son2);;
 
-///Single point cross on elements of different size, 
-let difSingleCross (parent1, parent2) =
-    let size = min (Array.length parent1) (Array.length parent2)
-    let pivot = rand.Next size
-    let son1 = Array.append (parent1.[..pivot]) (parent2.[pivot+1..])
-    let son2 = Array.append (parent2.[..pivot]) (parent1.[pivot+1..])
-    (son2, son1);;
 
-///Double point cross on elements of different size, 
-let doubleCross (parent1, parent2) =
-    let size = min (Array.length parent1) (Array.length parent2)
-    let x = rand.Next size
-    let mutable y = rand.Next size
+
+///Double point cross  
+let doubleCross (parent1: 'a [], parent2: 'a []) =
+    let length = Array.length parent1 
+    let x = rand.Next length
+    let mutable y = rand.Next length
     while x=y do
-        y <- rand.Next size
+        y <- rand.Next length
     let pivot1 = min x y
     let pivot2 = max x y
     let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
     let son2 = Array.append (Array.append (parent2.[..pivot1]) (parent1.[pivot1+1..pivot2])) (parent2.[pivot2+1..])
-    (son2, son1);;
-    
-//-------------------Prototypes-----------------------------------------------------------------------
+    (son2, son1)
 
-//same length  
-let private proto1 period (parent1, parent2) = 
+
+
+///Swap the elements at a random index
+///swaps is the number of the swaps  
+let private randomSwapCross swaps (parent1, parent2) =
+    let son1 = Array.copy parent1
+    let son2 = Array.copy parent1
+    for _ in 0..swaps do
+        let index = rand.Next (Array.length parent1)
+        let temp = son1.[index]
+        son1.[index] <- son2.[index]
+        son2.[index] <- temp
+    (son1, son2)
+
+///Like randomSwapCross but number of swaps is random between 1 and maxSwaps.
+let private dynamicSwapCross maxSwaps (parent1, parent2) = 
+    let swaps = rand.Next(1, maxSwaps)
+    randomSwapCross swaps (parent1, parent2)
+
+
+
+///Swaps 2 aligned elements if a random number == 0 % period 
+let private periodicSwapCross period (parent1, parent2) = 
    Array.unzip [| for (x,y) in Array.zip parent1 parent2 -> if rand.Next() % period = 0 then (y,x) else (x,y) |]
  
-//same length  
-let private proto2 (parent1, parent2) = proto1 (rand.Next(Array.length parent1)) (parent1, parent2)
+///Like periodicSwapCross but period is random between 1 and maxPeriod.  
+let private randomPeriodicSwapCross maxPeriod (parent1, parent2) = periodicSwapCross (rand.Next(maxPeriod)) (parent1, parent2)
 
-//same length
-let private proto3 breadth (parent1, parent2) =
+///Divides the parents in a central area and the edges, swaps this areas
+///breadth is the percentage of the central area
+let private centreCross breadth (parent1, parent2) =
     let pivot1 = int(float(Array.length parent1) * breadth / 2.0)
     let pivot2 = Array.length parent2 - pivot1
     let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
@@ -68,21 +82,78 @@ let private proto3 breadth (parent1, parent2) =
     (son2, son1)
 
 
-//same length   
-let private proto4 swaps (parent1, parent2) =
+
+//------------Experimental Feathures-----------------------------
+
+    (*
+///Single point cross on elements of different size, 
+///distributor fun selects a random pivot
+let difSingleCross distributor (parent1, parent2) =
+    let size = min (Array.length parent1) (Array.length parent2)
+    let pivot = distributor size
+    let son1 = Array.append (parent1.[..pivot]) (parent2.[pivot+1..])
+    let son2 = Array.append (parent2.[..pivot]) (parent1.[pivot+1..])
+    (son2, son1);;
+    *)
+
+    (*
+///Swap the elements at 2 different random index
+///swaps is the number of the swaps  
+let private doubleSwapCross distributor1 distributor2 swaps length (parent1, parent2) =
     let son1 = Array.copy parent1
     let son2 = Array.copy parent1
-    for _ in swaps do
-        let index = rand.Next(Array.length parent1) 
-        let temp = son1.[index]
-        son1.[index] <- son2.[index]
-        son2.[index] <- temp
+    for _ in 0..swaps do
+        let index1 = distributor1 length
+        let index2 = distributor2 length
+        let temp = son1.[index1]
+        son1.[index1] <- son2.[index2]
+        son2.[index2] <- temp
     (son1, son2)
 
-//same length 
-let private proto5 step (parent1, parent2: 'a[]) =
-    let f i = i % (2*step) < step 
-    Array.unzip [|for i in 0..Array.length parent1-1 -> if f i then (parent1.[i], parent2.[i]) else (parent2.[i], parent1.[i])|]
-    
-        
+///Like doubleSwapCross but number of swaps is random between 1 and maxSwaps.
+let private dynamicDoubleSwapCross distributor1 distributor2 maxSwaps length (parent1, parent2) = 
+    let swaps = rand.Next(1, maxSwaps)
+    doubleSwapCross distributor1 distributor2 swaps length  (parent1, parent2)
+*)
+
+
+(*
+///Double point cross on elements of different size, 
+///distributor fun selects a random pivot
+let difDoubleCross distributor (parent1, parent2) =
+    let size = min (Array.length parent1) (Array.length parent2)
+    let x = distributor size
+    let mutable y = distributor size
+    while x=y do
+        y <- distributor size
+    let pivot1 = min x y
+    let pivot2 = max x y
+    let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
+    let son2 = Array.append (Array.append (parent2.[..pivot1]) (parent1.[pivot1+1..pivot2])) (parent2.[pivot2+1..])
+    (son2, son1)
+
+    *)
+
+(*
+///Take a basic crosser and select dynamically the length of the shortest parent.
+let diffMetaCross basicCross (parent1, parent2) =
+    let length = min (Array.length parent1) (Array.length parent1)
+    basicCross length (parent1, parent2)
+
+*)
+
+(*
+///Take a basic crosser and select dynamically the length of the parents.
+let dynamicLengthMetaCross basicCross (parent1, parent2) =
+     let length = Array.length parent1
+     basicCross length (parent1, parent2)
+
+*)
+
+
+
+
+
+
+      
     

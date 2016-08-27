@@ -88,12 +88,17 @@ let percentExpander reproduction factor population =
     let limit = int(factor * float(Array.length population))           
     limitExpander reproduction limit population;;
     
-//-------------------Prototypes-----------------------------------------------------------------------
-    
-let private proto1 evolution initializer elements grups =
+
+///Apply an evolution algorithm on various population produced by an initializer
+///and return a population composed by the bests elements of the sub-populations
+///elements is the number of elements of one sub-population
+///grups is the number of sub-population.
+///This algorthm partially avoid the crouding
+let private iterativeEvolution evolution initializer elements grups =
     let first (x: 'T []) = x.[0] 
-    [|for _ in grups ->  first(evolution (initializer elements))|]
-    
+    [|for _ in 0..grups ->  first(evolution (initializer elements))|]
+ 
+//-------------------Prototypes-----------------------------------------------------------------------    
 let private proto2 reproduction split stop population =
     let rec routine population =
         let toNext, toRep: 'a seq * 'a seq = split population
