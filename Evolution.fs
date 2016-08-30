@@ -29,10 +29,7 @@ let private sortMerge population generation size =
      Array.sortInPlaceBy (fun (x,y) -> -y) next
      if size > 0 then Array.sub next 0 size else next;;
      
-let private protoFM population generation size =
-    let _,min = Array.last population 
-    let bests = Seq.filter (fun (_,y) -> y > min) generation
-    sortMerge population bests size
+
     
 let private mutation mutator (elm1, elm2) = 
     mutator elm1
@@ -126,3 +123,8 @@ let private proto2 reproduction split stop population =
         let generation = Array.ofSeq (Seq.append toNext (reproduction toRep))
         if stop generation then generation else routine generation
     routine population
+
+let private protoFM population generation size =
+    let _,min = Array.last population 
+    let bests = Seq.filter (fun (_,y) -> y > min) generation
+    sortMerge population bests size

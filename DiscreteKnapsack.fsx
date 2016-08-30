@@ -56,7 +56,7 @@ let fitness2 (element: int[]) =
 
 //algoriths variables
 let elements = 20 // number of elements of the populations
-let changes = 15 //number of iterations of the algorithms without which the solution changes
+let changes = 10 //number of iterations of the algorithms without which the solution changes
 
 //Algorithms configuration:
 //mutation configuration
@@ -84,7 +84,7 @@ let solution1 = restrictTo1 <| (evolution1 <| init elements);;
 (*This algorithm start from a list of a single array initialized to 0, expand the population
 until populationSize, applay the standard genetic algorithm with using the first Heuristic,
 and restrict the population at 1 element*)
-//let solution2 = restrictTo1 <| (evolution1 <| (expander <| (elements2Population fitness <| zero)));;
+let solution2 = restrictTo1 <| (evolution1 <| (expander <| (elements2Population fitness <| zero)));;
 
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic, restrict the population at 1 element, and reevaluate this to compare with other solutions*)
