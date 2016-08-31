@@ -32,10 +32,10 @@ module GeneticFramework.Generic.Mutators
         for _ in 0..number do
             mutator element
           
-    ///Swaps 2 random elements chosed by 2 distributors
-    let swapper distributor1 distributor2 parent =
-            let index1 = distributor1(Array.length parent)
-            let index2 = distributor2(Array.length parent)
+    ///Swaps 2 random elements s
+    let swapper parent =
+            let index1 = rand.Next (Array.length parent)
+            let index2 = rand.Next (Array.length parent)
             let temp = parent.[index1]
             parent.[index1] <- parent.[index2]
             parent.[index2] <- temp
