@@ -31,11 +31,6 @@ namespace GeneticFramework.Generic
         ///Restricts the population at a new size
         let restrictor newSize population = Array.sub population 0 newSize
 
-        ///Sort and restrict the population at a new size
-        let sortRestrictor newSize population = 
-            Array.sortInPlaceBy (fun (x,y) -> -y) population
-            Array.sub population 0 newSize;;
-
 ///Utility functions for Integers
 namespace GeneticFramework.Integer
     module Utils=

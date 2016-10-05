@@ -20,26 +20,23 @@ limitations under the License.
 ///Generic Evolution algorithms
 module GeneticFramework.Generic.Evolution
 
-let private merge population generation size =
-    let next = Array.append population (Seq.toArray generation)
-    if size > 0 then Array.sub next 0 size else next;;
 
-let private sortMerge population generation size = 
-     let next = Array.append population (Seq.toArray generation)
-     Array.sortInPlaceBy (fun (x,y) -> -y) next
-     if size > 0 then Array.sub next 0 size else next;;
-     
+let merge population generation =
+    Seq.toArray (Seq.append population generation)
+
+let mergeRestrict size population generation =
+    Seq.append population generation |> Seq.sortBy (fun x -> -snd x) |> Seq.take size |> Seq.toArray
 
     
 let private mutation mutator (elm1, elm2) = 
     mutator elm1
     mutator elm2
-    (elm1, elm2);;
+    (elm1, elm2)
 
 let private fit (fitness:'a -> int) (elm1, elm2) = ((elm1, fitness elm1), (elm2, fitness elm2))
 
 ///Standard reproduction routine
-let private stdreproduction crosser selector  fitness mutator = fun population ->
+let private stdReproduction crosser selector  fitness mutator = fun population ->
     let couples = selector population 
     let subroutine = crosser >> mutation mutator >> fit fitness
     (Seq.map subroutine couples) |> Seq.collect (fun (x,y) -> seq {yield x; yield y})
@@ -55,50 +52,51 @@ let lazyReproduction reproduction = fun population ->
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
 ///if best element not change for "changes" consecutive iterations the algorithms end.
 let eliteEvolution crosser selector fitness mutator changes population =
-    let reproduction = lazyReproduction (stdreproduction crosser selector mutator fitness)
+    let reproduction = lazyReproduction (stdReproduction crosser selector mutator fitness)
     let rec routine (current: ('a*int) []) attempts =
         if attempts = 0 then current
         else
-            let max = snd(current.[0])
-            let next = sortMerge population (reproduction current) (Array.length population)
-            if snd(next.[0]) > max then routine next changes
-            else routine next (attempts-1) in
+            let threshold = Array.maxBy (fun x -> snd x) population
+            let generation = mergeRestrict (Array.length population) population (reproduction current)
+            let max = Array.maxBy (fun x -> snd x) generation
+            if max > threshold then routine generation changes
+            else routine generation (attempts-1) in
     routine (Array.sortBy (fun (x,y) -> -y) population) changes;;
-        
+
 
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
 ///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
 let grupEvolution crosser selector fitness mutator changes population =
-    let reproduction = lazyReproduction (stdreproduction crosser selector mutator fitness)
+    let reproduction = lazyReproduction (stdReproduction crosser selector mutator fitness)
     let rec routine current max attempts =
         if attempts = 0 then current
         else
-            let next = sortMerge population (reproduction current) (Array.length population)
+            let generation = mergeRestrict (Array.length population) population (reproduction current)
             let sum = Array.sumBy (fun (x,y) -> y) current
-            if sum > max then routine next sum changes
-            else routine next max (attempts-1) in
+            if sum > max then routine generation sum changes
+            else routine generation max (attempts-1)
     let sum = Array.sumBy (fun (x,y) -> y) population
     routine population sum changes;;
 
 
 ///Expands the population for count iterations
 let countExpander crosser selector fitness mutator count population = 
-    let reproduction = stdreproduction crosser selector mutator fitness
+    let reproduction = stdReproduction crosser selector mutator fitness
     let rec routine current count=
         if count = 0 then current
         else
-            let next = merge population (reproduction current) -1
-            routine next (count-1) in
+            let generation = merge population (reproduction current) 
+            routine generation (count-1) in
     routine population count;;
 
 ///Expands the population until limit (new size)
 let limitExpander crosser selector fitness mutator limit population = 
-    let reproduction = stdreproduction crosser selector mutator fitness
+    let reproduction = stdReproduction crosser selector mutator fitness
     let rec routine current =
         if limit <= (Array.length current) then current
         else
-            let next = merge population (reproduction current) -1
-            routine next in
+            let generation = merge population (reproduction current) 
+            routine generation in
     routine population;;
         
 ///Expands the population of a factor

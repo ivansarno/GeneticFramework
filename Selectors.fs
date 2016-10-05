@@ -32,21 +32,24 @@ let randSel population =
 let distSel population = 
     Seq.filter (fun (x,y) -> x <> y) (randSel population)
 
-///Returns couples composed by elements in opposite positions
+///Returns couples composed by elements in opposite positions in the sorted population
 let revSel population =
+    Array.sortInPlaceBy (fun x -> -snd x) population 
     let length = Array.length population - 1
     let first = seq { for i in 0..length -> fst(population.[i]) }
     let second = seq { for i in length.. -1..0 -> fst(population.[i]) }
     Seq.zip first second 
 
-///Returns couples composed by contiguous elements
+///Returns couples composed of contiguous elements in the sorted population
 let contSel population = 
+    Array.sortInPlaceBy (fun x -> -snd x) population
     let size = (Array.length population) - 1
     seq { for i in 1..size -> (fst(population.[i-1]), fst(population.[i])) }
 
 
-///Returns couples composed by dinstinct contiguous elements choosed 
+///Returns couples composed of contiguous distinct elements in the sorted population
 let distContSel population = 
+    Array.sortInPlaceBy (fun x -> -snd x) population
     let size = (Array.length population) - 1
     seq { for i in 1..2..size -> (fst(population.[i-1]), fst(population.[i])) }
 
