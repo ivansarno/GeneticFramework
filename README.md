@@ -18,6 +18,8 @@ The framework provides several operators to build the pipeline. The framework de
 The framework is independent of the problem encodings. It provides built-in support for:  
 
 	-Integers: Mutators, Initializers and Utils
+	-Real: : Mutators, Initializers and Utils
+	-BitString: : specific Crossers, Mutators, Initializers and Utils
 	
 **Examples**  
 Examples of use are available:   

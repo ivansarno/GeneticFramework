@@ -36,16 +36,6 @@ namespace GeneticFramework.Generic
             Array.sortInPlaceBy (fun (x,y) -> -y) population
             Array.sub population 0 newSize
 
-///Utility functions for Integers
-namespace GeneticFramework.Integer
-    module Utils=
-        let private rand = System.Random()
-
-        ///Returns a population of random elements
-        let randInit minValue (fitness:int[]->int) maxValue length elements =
-            [|for i in 0..elements-1 -> 
-                let e = [|for i in 0..length-1 -> rand.Next(minValue, maxValue+1)|]
-                in (e, fitness e)|];;
 
 ///Functions that creates complex operator from basic operator like mutators, selectors, reproduction, distributors or crossers                        
 namespace GeneticFramework.Generic

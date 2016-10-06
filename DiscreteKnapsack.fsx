@@ -17,14 +17,14 @@ limitations under the License.
 *)
 //version V.0.1
 
-#load "Selectors.fs" "GenericCrossers.fs" 
-#load "Evolution.fs" "IntegerMutators.fs" "Utils.fs"
+#load "Selectors.fs" "Crossers.fs" 
+#load "Evolution.fs" "Integer.fs" "Utils.fs"
 open GeneticFramework.Generic.Selectors
 open GeneticFramework.Generic.Crossers
 open GeneticFramework.Generic.Evolution
 open GeneticFramawork.Integer.Mutators
 open GeneticFramework.Generic.Utils
-open GeneticFramework.Integer.Utils
+open GeneticFramawork.Integer.Utils
 
 (*This is an example of how use GeneticFramework to build an algorithm to solve a problem.
 I build various custom functions, using only basic elements in the framework, to solve the Discrete Knapsack problem.*)
@@ -64,8 +64,8 @@ let mutator = addModMut maxSel
 
 (*to improve clarity fix some elements of the pipelines:*)
 //initializes the population with random elements and fits
-let init = randInit 0 fitness maxSel objects 
-let init2 = randInit 0 fitness2 maxSel objects 
+let init = randInit 0 fitness (maxSel/4) objects 
+let init2 = randInit 0 fitness2 (maxSel/3) objects 
 //a list of single element of only 0 
 let zero = [(Array.zeroCreate 12: int[])]
 
@@ -83,7 +83,7 @@ with using the first Heuristic, and restrict the population at 1 element*)
 let solution1 = restrictTo1 <| (evolution1 <| init elements);;
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
-until populationSize, applay the standard genetic algorithm with using the first Heuristic,
+until populationSize, applay the standard genetic algorithm using the first Heuristic,
 and restrict the population at 1 element*)
 let solution2 = restrictTo1 <| (evolution1 <| (expander <| (elements2Population fitness <| zero)));;
 
@@ -99,14 +99,14 @@ let solution4 = refit fitness <| (restrictTo1 <| (evolution2 <| (expander2 <| (e
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic. The second heuristc allow  not accepttables instances,
 therefore the population is reevaluated with the first heuristic, restricted at 5 elements.
-Therefore the algorithms expand the population until populationSize and apply applay the standard genetic algorithm
+Therefore the algorithms expand the population until populationSize and apply the standard genetic algorithm
 with using the first Heuristic to obtain the bests acceptables instances from not acceptable population.
 Finally restrict the population at 1 element*) 
 let solution5 = restrictTo1 <| (evolution1<| (restrictTo5 <| (refit fitness <| (evolution2 <| init2 elements))));;
 
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
-until populationSize, applay the standard genetic algorithm with using the second Heuristic. 
+until populationSize, applay the standard genetic algorithm  using the second Heuristic. 
 The second heuristc allow  not accepttables instances, therefore the population is reevaluated with the first heuristic, 
 restricted at 5 elements.
 Therefore the algorithms expand the population until populationSize and apply applay the standard genetic algorithm
