@@ -34,8 +34,8 @@ module GeneticFramework.Generic.Mutators
           
     ///Swaps 2 random elements s
     let swapper parent =
-            let index1 = rand.Next (Array.length parent)
-            let index2 = rand.Next (Array.length parent)
-            let temp = parent.[index1]
-            parent.[index1] <- parent.[index2]
-            parent.[index2] <- temp
+        let index1 = rand.Next (Array.length parent)
+        let index2 = rand.Next (Array.length parent)
+        let temp = parent.[index1]
+        parent.[index1] <- parent.[index2]
+        parent.[index2] <- temp

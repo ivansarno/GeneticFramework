@@ -31,6 +31,11 @@ namespace GeneticFramework.Generic
         ///Restricts the population at a new size
         let restrictor newSize population = Array.sub population 0 newSize
 
+        ///Sort and restrict the population at a new size
+        let sortRestrictor newSize population = 
+            Array.sortInPlaceBy (fun (x,y) -> -y) population
+            Array.sub population 0 newSize
+
 ///Utility functions for Integers
 namespace GeneticFramework.Integer
     module Utils=
@@ -54,14 +59,11 @@ namespace GeneticFramework.Generic
             operators.[index] argument
 
         ///Apply an operator choosed from an array basing on a probability distribution
-        ///the fun probability take the size of the vector and return an array that
-        ///represents a probability destribution
-        let probOp probability operators argument =
+        let probOp (probability:float[]) (operators: ('a->'b)[]) argument =
             let choice = rand.NextDouble()
-            let dist: float[] = probability (Array.length operators)
-            let mutable cumulative = dist.[0]
+            let mutable cumulative = probability.[0]
             let mutable i = 0
             while choice > cumulative do
                 i <- i+1
-                cumulative <- cumulative + dist.[i]
+                cumulative <- cumulative + probability.[i]
             operators.[i-1] argument

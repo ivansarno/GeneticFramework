@@ -36,7 +36,7 @@ let private mutation mutator (elm1, elm2) =
 let private fit (fitness:'a -> int) (elm1, elm2) = ((elm1, fitness elm1), (elm2, fitness elm2))
 
 ///Standard reproduction routine
-let private stdReproduction crosser selector  fitness mutator = fun population ->
+let private stdReproduction crosser selector fitness mutator = fun population ->
     let couples = selector population 
     let subroutine = crosser >> mutation mutator >> fit fitness
     (Seq.map subroutine couples) |> Seq.collect (fun (x,y) -> seq {yield x; yield y})

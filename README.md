@@ -4,7 +4,7 @@ Framework for Genetic Algorithm in F#
 **This project is in the development stage**
 
 The framework allows you to create complex functions that implements Genetic Algorithms,structured as a pipeline.
-The framework provides several operators to build the pipeline, from pre-configured to those customizable at various levels of detail. The framework design is focused on flexibility , efficiency is secondary, the purpose is to give the user the ability to easily experiment with various solutions to choose the appropriate algorithm.
+The framework provides several operators to build the pipeline. The framework design is focused on flexibility , efficiency is secondary, the purpose is to give the user the ability to easily experiment with various solutions to choose the appropriate algorithm.
 
 **The framework consists of:**  
 

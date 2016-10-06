@@ -31,7 +31,7 @@ I build various custom functions, using only basic elements in the framework, to
  
 //problem variables
 let objects = 12
-let maxSel = 25 //max number of instance of the same object
+let maxSel = 10 //max number of instance of the same object
 let maxWaigth = 200
 let waigths = [|20; 30; 40; 25; 60; 22; 37; 12; 30; 15; 80; 42|]
 let values = [|15; 13; 55; 20; 25; 22; 2; 13; 40; 17; 26; 33|]
@@ -72,8 +72,8 @@ let zero = [(Array.zeroCreate 12: int[])]
 //evolution algorithms configuration
 let expander2 = limitExpander singleCross randSel mutator fitness2 20 //expand the population until 20 elements using fitness2
 let expander = limitExpander singleCross randSel mutator fitness 20 //expand the population until 20 elements using fitness
-let restrictTo1 = restrictor 1: (int[] * int)[]->(int[] * int)[] //restrict the population at 1 element
-let restrictTo5 = restrictor 5: (int[] * int)[]->(int[] * int)[] //restrict the population at 5 elements
+let restrictTo1 = sortRestrictor 1: (int[] * int)[]->(int[] * int)[] //restrict the population at 1 element
+let restrictTo5 = sortRestrictor 5: (int[] * int)[]->(int[] * int)[] //restrict the population at 5 elements
 let evolution1 = eliteEvolution singleCross randSel mutator fitness changes 
 let evolution2 = eliteEvolution singleCross randSel mutator fitness2 changes 
 
@@ -81,6 +81,7 @@ let evolution2 = eliteEvolution singleCross randSel mutator fitness2 changes
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the first Heuristic, and restrict the population at 1 element*)
 let solution1 = restrictTo1 <| (evolution1 <| init elements);;
+
 (*This algorithm start from a list of a single array initialized to 0, expand the population
 until populationSize, applay the standard genetic algorithm with using the first Heuristic,
 and restrict the population at 1 element*)
@@ -88,12 +89,12 @@ let solution2 = restrictTo1 <| (evolution1 <| (expander <| (elements2Population 
 
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic, restrict the population at 1 element, and reevaluate this to compare with other solutions*)
-let solution3 = refit fitness <| (restrictTo1 <| (evolution1 <| init elements));;
+let solution3 = refit fitness <| (restrictTo1 <| (evolution2 <| init2 elements));;
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
 until populationSize, applay the standard genetic algorithm with using the second Heuristic,
 restrict the population at 1 element, and reevaluate this to compare with other solutions*)
-let solution4 = refit fitness <| (restrictTo1 <| (evolution1<| (expander <| (elements2Population fitness <| zero))));;
+let solution4 = refit fitness <| (restrictTo1 <| (evolution2 <| (expander2 <| (elements2Population fitness2 <| zero))));;
 
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
 with using the second Heuristic. The second heuristc allow  not accepttables instances,
@@ -105,7 +106,7 @@ let solution5 = restrictTo1 <| (evolution1<| (restrictTo5 <| (refit fitness <| (
 
 
 (*This algorithm start from a list of a single array initialized to 0, expand the population
-until populationSize, applay the standard genetic algorithm with using the first Heuristic. 
+until populationSize, applay the standard genetic algorithm with using the second Heuristic. 
 The second heuristc allow  not accepttables instances, therefore the population is reevaluated with the first heuristic, 
 restricted at 5 elements.
 Therefore the algorithms expand the population until populationSize and apply applay the standard genetic algorithm
