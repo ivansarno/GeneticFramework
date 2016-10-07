@@ -27,7 +27,7 @@ open GeneticFramework.Generic.Utils
 open GeneticFramawork.Integer.Utils
 
 (*This is an example of how use GeneticFramework to build an algorithm to solve a problem.
-I build various custom functions, using only basic elements in the framework, to solve the Discrete Knapsack problem.*)
+I build various custom functions, using only basic elements in the framework, to solve (naively) the Discrete Knapsack problem.*)
  
 //problem variables
 let objects = 12
