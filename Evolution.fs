@@ -56,9 +56,9 @@ let eliteEvolution crosser selector fitness mutator changes population =
     let rec routine (current: ('a*int) []) attempts =
         if attempts = 0 then current
         else
-            let threshold = Array.maxBy (fun x -> snd x) population
+            let threshold = Array.maxBy snd population
             let generation = mergeRestrict (Array.length population) population (reproduction current)
-            let max = Array.maxBy (fun x -> snd x) generation
+            let max = Array.maxBy snd generation
             if max > threshold then routine generation changes
             else routine generation (attempts-1) in
     routine (Array.sortBy (fun (x,y) -> -y) population) changes;;
