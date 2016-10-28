@@ -40,13 +40,17 @@ namespace GeneticFramawork.Integer
         let addMut minValue maxValue element =
             let index = rand.Next(Array.length element)
             let num = (element.[index] + rand.Next(minValue, maxValue))
-            element.[index] <- if num > maxValue then maxValue else num
+            if num > maxValue then element.[index] <- maxValue
+            elif num < minValue then element.[index] <- minValue
+            else element.[index] <- num
 
         let subMut minValue maxValue element =
             let index = rand.Next(Array.length element)
             let num = (element.[index] - rand.Next(minValue, maxValue))
-            element.[index] <- if num < minValue then minValue else num
-         
+            if num > maxValue then element.[index] <- maxValue
+            elif num < minValue then element.[index] <- minValue
+            else element.[index] <- num
+                    
 
         let mulMut minValue maxValue element =
             let index = rand.Next(Array.length element)
@@ -64,15 +68,24 @@ namespace GeneticFramawork.Integer
     
         let andMut minValue maxValue element =
             let index = rand.Next(Array.length element) 
-            element.[index] <- (element.[index] &&& rand.Next(minValue, maxValue)) % maxValue
+            let num = (element.[index] &&& rand.Next(minValue, maxValue))
+            if num > maxValue then element.[index] <- maxValue
+            elif num < minValue then element.[index] <- minValue
+            else element.[index] <- num
 
         let orMut minValue maxValue element =
             let index = rand.Next(Array.length element) 
-            element.[index] <- (element.[index] ||| rand.Next(minValue, maxValue)) % maxValue
+            let num = (element.[index] ||| rand.Next(minValue, maxValue))
+            if num > maxValue then element.[index] <- maxValue
+            elif num < minValue then element.[index] <- minValue
+            else element.[index] <- num
 
         let xorMut minValue maxValue element =
             let index = rand.Next(Array.length element) 
-            element.[index] <- (element.[index] ^^^ rand.Next(minValue, maxValue)) % maxValue
+            let num = (element.[index] ^^^ rand.Next(minValue, maxValue))
+            if num > maxValue then element.[index] <- maxValue
+            elif num < minValue then element.[index] <- minValue
+            else element.[index] <- num
 
         let negMut element =
             let index = rand.Next(Array.length element)
@@ -84,7 +97,7 @@ namespace GeneticFramawork.Integer
 
         let replMut minValue maxValue element =
             let index = rand.Next(Array.length element) 
-            element.[index] <- rand.Next(minValue, maxValue) % maxValue
+            element.[index] <- rand.Next(minValue, maxValue)
 
     module Utils=
         let private rand = System.Random()

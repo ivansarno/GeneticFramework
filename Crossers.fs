@@ -17,8 +17,10 @@ limitations under the License.
 *)
 //version V.0.1
 
+
 ///Crossover operators
 module GeneticFramework.Generic.Crossers
+open System.Collections
 
 let private rand = System.Random();;
 
@@ -83,9 +85,14 @@ let private centreCross breadth (parent1, parent2) =
 
 
 
+let maskCross (mask: BitArray) (parent1: 'a[], parent2: 'a[]) =
+    let length = Array.length parent1
+    let son1 = [|for i in 0..length  -> if mask.Get(i) then parent1.[i] else parent2.[i]|]
+    let son2 = [|for i in 0..length  -> if mask.Get(i) then parent2.[i] else parent1.[i]|]
+    (son2, son1)
 
-
-
-
-      
+let randMaskCross length (parent1, parent2) =
+    let temp = [|for i in 0..(length/32 + 1) -> rand.Next()|]
+    let mask = BitArray(temp)
+    maskCross mask (parent1, parent2)
     
