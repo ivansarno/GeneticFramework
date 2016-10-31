@@ -107,3 +107,15 @@ namespace GeneticFramawork.Integer
             [|for i in 0..elements-1 -> 
                 let e = [|for i in 0..length-1 -> rand.Next(minValue, maxValue+1)|]
                 in (e, fitness e)|]
+        
+        ///Returns a population of elements of only zero
+        let zeroInit (fitness:int[]->int) length elements =
+            let temp = Array.zeroCreate length
+            let temp2 = (temp, fitness temp)
+            [|for i in 0..elements-1 -> temp2|]
+        
+        ///Returns a population of elements of only one
+        let oneInit (fitness:int[]->int) length elements =
+            let temp = Array.create length 1
+            let temp2 = (temp, fitness temp)
+            [|for i in 0..elements-1 -> temp2|]

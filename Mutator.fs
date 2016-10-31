@@ -39,3 +39,7 @@ module GeneticFramework.Generic.Mutators
         let temp = parent.[index1]
         parent.[index1] <- parent.[index2]
         parent.[index2] <- temp
+
+    ///Applay all mutators on the element in sequence
+    let sequenceMutator mutators element =
+        for m in mutators do m element

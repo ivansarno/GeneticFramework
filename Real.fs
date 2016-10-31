@@ -70,3 +70,15 @@ namespace GeneticFramawork.Real
             [|for i in 0..elements-1 -> 
                 let e = [|for i in 0..length-1 -> (rand.NextDouble() * (maxValue - minValue) + minValue)|]
                 in (e, fitness e)|]
+
+        ///Returns a population of elements of only zero
+        let zeroInit (fitness:double[]->int) length elements =
+            let temp = Array.zeroCreate length
+            let temp2 = (temp, fitness temp)
+            [|for i in 0..elements-1 -> temp2|]
+        
+        ///Returns a population of elements of only one
+        let oneInit (fitness:double[]->int) length elements =
+            let temp = Array.create length 1.0
+            let temp2 = (temp, fitness temp)
+            [|for i in 0..elements-1 -> temp2|]
