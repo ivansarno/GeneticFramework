@@ -15,7 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.0.1
 
 ///Basic mutation operator for BitString
 namespace GeneticFramawork.BitString
@@ -27,7 +26,7 @@ namespace GeneticFramawork.BitString
         let replMut (element: BitArray) =
             let temp = rand.Next()
             let index = temp % element.Count
-            element.Set(index, temp % 2 = 1)
+            element.Set(index, rand.Next() % 2 = 1)
 
         let setZeroMut (element: BitArray) =
             let index = rand.Next(element.Count)
@@ -68,9 +67,9 @@ namespace GeneticFramawork.BitString
             [|for i in 0..length-1 -> temp2|]
 
     ///Cross operators specific for bitstring
-    module Crossers =
+    module Crossers =     
         
-        
+        ///
         let maskCross (mask:BitArray) =
             let reverse = BitArray(mask).Not()
             let crossHelper (parent1, parent2) =

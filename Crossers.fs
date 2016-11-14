@@ -15,7 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.0.1
 
 
 ///Crossover operators
@@ -84,13 +83,14 @@ let private centreCross breadth (parent1, parent2) =
     (son2, son1)
 
 
-
+///
 let maskCross (mask: BitArray) (parent1: 'a[], parent2: 'a[]) =
     let length = Array.length parent1
     let son1 = [|for i in 0..length-1  -> if mask.Get(i) then parent1.[i] else parent2.[i]|]
     let son2 = [|for i in 0..length-1  -> if mask.Get(i) then parent2.[i] else parent1.[i]|]
     (son2, son1)
 
+///version of maskCross with random mask
 let randMaskCross length (parent1, parent2) =
     let temp = [|for i in 0..(length/32 + 1) -> rand.Next()|]
     let mask = BitArray(temp)
