@@ -15,7 +15,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.0.1
 
 ///Generic mutation operators
 module GeneticFramework.Generic.Mutators
@@ -39,3 +38,7 @@ module GeneticFramework.Generic.Mutators
         let temp = parent.[index1]
         parent.[index1] <- parent.[index2]
         parent.[index2] <- temp
+
+    ///Applay all mutators on the element in sequence
+    let sequenceMutator mutators element =
+        for m in mutators do m element

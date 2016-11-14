@@ -15,16 +15,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 *)
-//version V.0.1
+
 
 ///Generic Evolution algorithms
 module GeneticFramework.Generic.Evolution
 
 
-let merge population generation =
+let private merge population generation =
     Seq.toArray (Seq.append population generation)
 
-let mergeRestrict size population generation =
+let private mergeRestrict size population generation =
     Seq.append population generation |> Seq.sortBy (fun x -> -snd x) |> Seq.take size |> Seq.toArray
 
     
@@ -43,7 +43,7 @@ let private stdReproduction crosser selector fitness mutator = fun population ->
 
 ///Take a reproduction routine and return a routine that discards the elements 
 ///with lower value to the minimum value of the previous generation
-let lazyReproduction reproduction = fun population ->
+let private lazyReproduction reproduction = fun population ->
     let minimum: int = snd(Array.last population)
     Seq.filter (fun (x,y) -> y > minimum) (reproduction population) 
 
