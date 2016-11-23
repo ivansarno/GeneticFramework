@@ -22,5 +22,6 @@ The framework is independent of the problem encodings. It provides built-in supp
 	-BitString: : specific Crossers, Mutators, Initializers and Utils
 	
 **Examples**  
-Examples of use are available:   
-	-Discrete Knapsack Problem
+Examples available:   
+	-Discrete Knapsack Problem (pipelining and configuration)
+	-Partitiotion (metaoperator)
