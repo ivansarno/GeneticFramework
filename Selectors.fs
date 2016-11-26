@@ -52,4 +52,7 @@ let distContSel population =
     let size = (Array.length population) - 1
     seq { for i in 1..2..size -> (fst(population.[i-1]), fst(population.[i])) }
 
-    
+///Returns all combination of elements of the population
+let allSelector population = 
+    seq {for p1 in population do for p2 in population -> (p1,p2)}
+

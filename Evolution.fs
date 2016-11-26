@@ -78,8 +78,19 @@ let grupEvolution crosser selector fitness mutator changes population =
     let sum = Array.sumBy (fun (x,y) -> y) population
     routine population sum changes;;
 
+///Evolves the population for count iterations
+let countEvolution crosser selector fitness mutator count population = 
+    let reproduction = stdReproduction crosser selector fitness mutator
+    let elements = Array.length population
+    let rec routine current count=
+        if count = 0 then current
+        else
+            let generation = mergeRestrict elements population (reproduction current) 
+            routine generation (count-1) in
+    routine population count;;
 
-///Expands the population for count iterations
+
+///Expands the population for count iterations (use elitism)
 let countExpander crosser selector fitness mutator count population = 
     let reproduction = stdReproduction crosser selector fitness mutator
     let rec routine current count=
