@@ -23,5 +23,5 @@ The framework is independent of the problem encodings. It provides built-in supp
 	
 **Examples**  
 Examples available:   
-	-Discrete Knapsack Problem (pipelining and configuration)
+	-Discrete Knapsack Problem (pipelining and configuration)  
 	-Partitiotion (metaoperator)
