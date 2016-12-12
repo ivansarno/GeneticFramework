@@ -67,4 +67,4 @@ for 10 consecutive iterations the sum of values of the element does not increase
 let populationSize = 20
 let changes = 10
 let population = Array.concat [|(zeroInit fitness elementsNumber (populationSize/2)); (oneInit fitness elementsNumber (populationSize/2))|]
-let solution = sortRestrictor 1 <| grupEvolution crosser selector fitness mutator changes population
+let solution = sortRestrictor 1 <| sumEvolution crosser selector fitness mutator changes population
