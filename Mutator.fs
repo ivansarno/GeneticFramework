@@ -27,9 +27,13 @@ module GeneticFramework.Generic.Mutators
                 mutator element
 
     ///apply a basic mutator at various genes of the element
-    let multipleMutator mutator (element: 'a array) (number: int) =
-        for _ in 0..number do
+    let multipleMutator mutator (mutations: int) element  =
+        for _ in 1..mutations do
             mutator element
+
+    ///apply a basic mutator at various a random number of genes of the element
+    let randMultipleMutator mutator  (maxMutations: int) element = 
+        multipleMutator mutator (rand.Next(1, maxMutations)) element 
           
     ///Swaps 2 random elements s
     let swapper parent =

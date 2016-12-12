@@ -52,7 +52,7 @@ let private lazyReproduction reproduction = fun population ->
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
 ///if best element not change for "changes" consecutive iterations the algorithms end.
 let eliteEvolution crosser selector fitness mutator changes population =
-    let reproduction = lazyReproduction (stdReproduction crosser selector mutator fitness)
+    let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
     let rec routine (current: ('a*int) []) attempts =
         if attempts = 0 then current
         else
@@ -67,7 +67,7 @@ let eliteEvolution crosser selector fitness mutator changes population =
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
 ///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
 let grupEvolution crosser selector fitness mutator changes population =
-    let reproduction = lazyReproduction (stdReproduction crosser selector mutator fitness)
+    let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
     let rec routine current max attempts =
         if attempts = 0 then current
         else
@@ -78,10 +78,21 @@ let grupEvolution crosser selector fitness mutator changes population =
     let sum = Array.sumBy (fun (x,y) -> y) population
     routine population sum changes;;
 
+///Evolves the population for count iterations
+let countEvolution crosser selector fitness mutator count population = 
+    let reproduction = stdReproduction crosser selector fitness mutator
+    let elements = Array.length population
+    let rec routine current count=
+        if count = 0 then current
+        else
+            let generation = mergeRestrict elements population (reproduction current) 
+            routine generation (count-1) in
+    routine population count;;
 
-///Expands the population for count iterations
+
+///Expands the population for count iterations (use elitism)
 let countExpander crosser selector fitness mutator count population = 
-    let reproduction = stdReproduction crosser selector mutator fitness
+    let reproduction = stdReproduction crosser selector fitness mutator
     let rec routine current count=
         if count = 0 then current
         else
@@ -91,7 +102,7 @@ let countExpander crosser selector fitness mutator count population =
 
 ///Expands the population until limit (new size)
 let limitExpander crosser selector fitness mutator limit population = 
-    let reproduction = stdReproduction crosser selector mutator fitness
+    let reproduction = stdReproduction crosser selector fitness mutator
     let rec routine current =
         if limit <= (Array.length current) then current
         else

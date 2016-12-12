@@ -95,4 +95,8 @@ let randMaskCross length (parent1, parent2) =
     let temp = [|for i in 0..(length/32 + 1) -> rand.Next()|]
     let mask = BitArray(temp)
     maskCross mask (parent1, parent2)
+
+///Return the copy of the parents
+let nullCross (parent1, parent2) = (Array.copy parent1, Array.copy parent2)
+
     

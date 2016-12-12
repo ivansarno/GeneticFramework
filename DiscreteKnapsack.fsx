@@ -26,7 +26,7 @@ open GeneticFramawork.Integer.Mutators
 open GeneticFramework.Generic.Utils
 open GeneticFramawork.Integer.Utils
 
-(*This is an example of how use GeneticFramework to build an algorithm to solve a problem.
+(*This is an example of how use GeneticFramework to build an algorithm to solve a problem. This example explains configuration and pipelining.
 I build various custom functions, using only basic elements in the framework, to solve (naively) the Discrete Knapsack problem.*)
  
 //problem variables
@@ -70,12 +70,12 @@ let init2 = randInit 0 fitness2 (maxSel/3) objects
 let zero = [(Array.zeroCreate 12: int[])]
 
 //evolution algorithms configuration
-let expander2 = limitExpander singleCross randSel mutator fitness2 20 //expand the population until 20 elements using fitness2
-let expander = limitExpander singleCross randSel mutator fitness 20 //expand the population until 20 elements using fitness
+let expander2 = limitExpander singleCross randSel fitness2 mutator 20 //expand the population until 20 elements using fitness2
+let expander = limitExpander singleCross randSel fitness mutator 20 //expand the population until 20 elements using fitness
 let restrictTo1 = sortRestrictor 1: (int[] * int)[]->(int[] * int)[] //restrict the population at 1 element
 let restrictTo5 = sortRestrictor 5: (int[] * int)[]->(int[] * int)[] //restrict the population at 5 elements
-let evolution1 = eliteEvolution singleCross randSel mutator fitness changes 
-let evolution2 = eliteEvolution singleCross randSel mutator fitness2 changes 
+let evolution1 = eliteEvolution singleCross randSel fitness mutator changes 
+let evolution2 = eliteEvolution singleCross randSel fitness2 mutator changes 
 
 //algorithms:
 (*This algorithm start from a random generated element, applay the standard genetic algorithm
