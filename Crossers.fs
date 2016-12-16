@@ -65,17 +65,9 @@ let private randSwapCross maxSwaps (parent1, parent2) =
     swapCross swaps (parent1, parent2)
 
 
-
-///Swaps 2 aligned elements if a random number == 0 % period 
-let private periodicSwapCross period (parent1, parent2) = 
-   Array.unzip [| for (x,y) in Array.zip parent1 parent2 -> if rand.Next() % period = 0 then (y,x) else (x,y) |]
- 
-///Like periodicSwapCross but period is random between 1 and maxPeriod.  
-let private randomPeriodicSwapCross maxPeriod (parent1, parent2) = periodicSwapCross (rand.Next(maxPeriod)) (parent1, parent2)
-
 ///Divides the parents in a central area and the edges, swaps this areas
 ///breadth is the percentage of the central area
-let private centreCross breadth (parent1, parent2) =
+let centreCross breadth (parent1, parent2) =
     let pivot1 = int(float(Array.length parent1) * breadth / 2.0)
     let pivot2 = Array.length parent2 - pivot1
     let son1 = Array.append (Array.append (parent1.[..pivot1]) (parent2.[pivot1+1..pivot2])) (parent1.[pivot2+1..])
@@ -83,7 +75,6 @@ let private centreCross breadth (parent1, parent2) =
     (son2, son1)
 
 
-///
 let maskCross (mask: BitArray) (parent1: 'a[], parent2: 'a[]) =
     let length = Array.length parent1
     let son1 = [|for i in 0..length-1  -> if mask.Get(i) then parent1.[i] else parent2.[i]|]
@@ -99,10 +90,12 @@ let randMaskCross length (parent1, parent2) =
 ///Return the copy of the parents
 let nullCross (parent1, parent2) = (Array.copy parent1, Array.copy parent2)
 
+
 let uniformCross (parent1, parent2: 'a[]) =
     let length = Array.length parent1 - 1
     [|for i in 0..length -> if rand.Next(2) = 0 then (parent1.[i], parent2.[i]) else (parent2.[i], parent1.[i])|]
     |> Array.unzip 
+
 
 let segmentedCross probability (parent1, parent2) =
     let rec routine temp index (p1: 'a[], p2) =

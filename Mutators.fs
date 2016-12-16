@@ -26,14 +26,6 @@ module GeneticFramework.Generic.Mutators
           if rand.NextDouble() <= probability then
                 mutator element
 
-    ///apply a basic mutator at various genes of the element
-    let multipleMutator mutator (mutations: int) element  =
-        for _ in 1..mutations do
-            mutator element
-
-    ///apply a basic mutator at various a random number of genes of the element
-    let randMultipleMutator mutator  (maxMutations: int) element = 
-        multipleMutator mutator (rand.Next(1, maxMutations)) element 
           
     ///Swaps 2 random elements s
     let swapper parent =
@@ -47,25 +39,30 @@ module GeneticFramework.Generic.Mutators
     let sequenceMutator mutators element =
         for m in mutators do m element
 
+    ///Apply a mutation on a random gene
     let singleMutator mutation chromosoma = 
         let index = rand.Next (Array.length chromosoma) 
         chromosoma.[index] <- mutation chromosoma.[index]
 
+    ///Apply mutations on random genes
     let multiMutator mutation mutNumber chromosoma =
         for i in 0..mutNumber do
             let index = rand.Next (Array.length chromosoma) 
             chromosoma.[index] <- mutation chromosoma.[index]
-     
+    
+    ///Like multiMutator with a random number of mutations
     let randMultiMutator mutation maxMut chromosoma =
         multiMutator mutation (rand.Next(1, maxMut)) chromosoma
 
-    let proto4 mutation probability chromosoma =
+    ///Apply a mutation to all genes 
+    let allMutator mutation probability chromosoma =
         let length = Array.length chromosoma
         for i in 0..length do
             chromosoma.[i] <- if rand.NextDouble() >= probability 
                                 then mutation chromosoma.[i] else chromosoma.[i]
-        
-    let proto5 mutations probability chromosoma =
+
+    ///Apply a random mutation from the mutations array to all genes 
+    let randMutator mutations probability chromosoma =
         let length = Array.length chromosoma
         let mutNumber = Array.length mutations
         for i in 0..length do
