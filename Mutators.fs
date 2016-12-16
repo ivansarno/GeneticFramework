@@ -46,3 +46,29 @@ module GeneticFramework.Generic.Mutators
     ///Applay all mutators on the element in sequence
     let sequenceMutator mutators element =
         for m in mutators do m element
+
+    let singleMutator mutation chromosoma = 
+        let index = rand.Next (Array.length chromosoma) 
+        chromosoma.[index] <- mutation chromosoma.[index]
+
+    let multiMutator mutation mutNumber chromosoma =
+        for i in 0..mutNumber do
+            let index = rand.Next (Array.length chromosoma) 
+            chromosoma.[index] <- mutation chromosoma.[index]
+     
+    let randMultiMutator mutation maxMut chromosoma =
+        multiMutator mutation (rand.Next(1, maxMut)) chromosoma
+
+    let proto4 mutation probability chromosoma =
+        let length = Array.length chromosoma
+        for i in 0..length do
+            chromosoma.[i] <- if rand.NextDouble() >= probability 
+                                then mutation chromosoma.[i] else chromosoma.[i]
+        
+    let proto5 mutations probability chromosoma =
+        let length = Array.length chromosoma
+        let mutNumber = Array.length mutations
+        for i in 0..length do
+            let mut = rand.Next(mutNumber)
+            chromosoma.[i] <- if rand.NextDouble() >= probability 
+                                then mutations.[mut] chromosoma.[i] else chromosoma.[i]
