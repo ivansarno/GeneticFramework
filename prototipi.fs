@@ -46,3 +46,103 @@ let private protoFM population generation size =
     let bests = Seq.filter (fun (_,y) -> y > min) generation
     sortMerge population bests size
 
+//_____________________Stop_________________________________________________
+
+type IStop =
+    abstract member Stop: ('a * int)[] -> bool
+    
+
+type CountStop(iterations) =
+    let mutable iteration = iterations
+    interface IStop with
+    
+        member this.Stop (population: ('a * int)[]) = 
+            iteration <- iteration - 1
+            if iteration = 0 then true else false 
+
+type P1(iterations) =
+    let mutable attempts = iterations
+    let mutable maxVal = 0
+
+    interface IStop with
+        member this.Stop population =
+            let max = snd (Array.maxBy snd population)
+            if maxVal >= max 
+                then attempts <- attempts - 1 else
+                maxVal <- max
+                attempts <- iterations
+            if attempts = 0 then true else false
+
+
+type P2(iterations) =
+    let mutable attempts = iterations
+    let mutable maxSum = 0
+
+    interface IStop with
+        member this.Stop population =
+            let sum = Array.sumBy snd population
+            if maxSum >= sum
+                then attempts <- attempts - 1 else
+                maxSum <- sum
+                attempts <- iterations
+            if attempts = 0 then true else false
+
+type P3(iterations) =
+    let mutable attempts = iterations
+    let mutable maxMean = 0.0
+
+    interface IStop with
+        member this.Stop population =
+            let mean = double(Array.sumBy snd population) / double(Array.length population)
+            if maxMean >= mean
+                then attempts <- attempts - 1 else
+                maxMean <- mean
+                attempts <- iterations
+            if attempts = 0 then true else false
+
+
+let andStopCombination stops population =
+    Array.forall (fun s -> s population)
+
+let orStopCombination stops population =
+    Array.exists (fun s -> s population)
+
+//_____________________Replacement_____________________
+
+let pureElitism population generation =
+    let size = Array. length population 
+    let newPopulation = Array.append population generation
+    Array.sortInPlaceBy (fun s -> -snd s) newPopulation
+    Array.take size newPopulation
+
+let e1 ratio population generation =
+    let length = Array.length population
+    let size = int(double(length) / ratio)
+    Array.sortInPlaceBy (fun s -> -snd s) population
+    Array.sortInPlaceBy (fun s -> -snd s) generation
+    let bestPop = Array.take size population
+    let bestGen = Array.take (length - size) generation
+    let newPopulation = Array.append (Array.take size population) generation
+    Array.sortInPlaceBy (fun s -> -snd s) newPopulation
+    newPopulation
+
+let e2 ratio population generation =
+    let length = Array.length population
+    let size = int(double(length) / ratio)
+    Array.sortInPlaceBy (fun s -> -snd s) population
+    let bestPop = Array.take size population
+    let bestGen = Array.take (length - size) generation
+    let newPopulation = Array.append (Array.take size population) generation
+    Array.sortInPlaceBy (fun s -> -snd s) newPopulation
+    newPopulation
+
+
+
+
+
+
+    
+    
+
+
+        
