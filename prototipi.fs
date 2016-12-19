@@ -136,12 +136,32 @@ let e2 ratio population generation =
     Array.sortInPlaceBy (fun s -> -snd s) newPopulation
     newPopulation
 
+//_____________________Coupling_______________________________
 
+let customCoupler s1 s2 ratio population =
+    let size = Array.length population / ratio 
+    [|for i in 1..size -> (s1 population, s2 population)|]
 
+let studCoupler s ratio population = 
+    let size = Array.length population / ratio 
+    let max = Array.maxBy snd 
+    [|for i in 1..size -> (max, s population)|]
 
+let bestFilter ratio  population =
+    let size = Array.length population / ratio 
+    Array.sortInPlaceBy (fun x -> -snd x) population 
+    Array.take size population
 
+let customFilter ratio s population =
+    let size = Array.length population / ratio
+    [|for i in 1..size -> s population|]
 
-    
+let fairFilter ratio1 ratio2 s1 s2 population =
+    let size1 = Array.length population / ratio1 
+    let size2 = Array.length population / ratio2
+    let bests = [|for i in 1..size1 -> s1 population|]
+    let others = [|for i in 1..size2 -> s2 population|]
+    Array.append bests others
     
 
 

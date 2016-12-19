@@ -44,7 +44,7 @@ namespace GeneticFramework.Generic
 
         ///Apply a random operator from an array of operators 
         let randOp operators argument = 
-            let index = rand.Next(0, Array.length operators)
+            let index = rand.Next(Array.length operators)
             operators.[index] argument
 
         ///Apply an operator choosed from an array basing on a probability distribution

@@ -123,7 +123,7 @@ let percentExpander crosser selector fitness mutator factor population =
 ///This algorthm partially avoid the crouding
 let iterativeEvolution evolution initializer elements grups =
     let first (x: 'T []) = x.[0] 
-    [|for _ in 0..grups ->  first(evolution (initializer elements))|]
+    [|for _ in 1..grups ->  first(evolution (initializer elements))|]
 
 ///Evolves the population until a maximum fitness value (use elitism)
 let limitEvolution crosser selector fitness mutator maxFitness population =

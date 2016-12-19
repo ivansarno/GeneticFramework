@@ -46,7 +46,7 @@ module GeneticFramework.Generic.Mutators
 
     ///Apply mutations on random genes
     let multiMutator mutation mutNumber chromosoma =
-        for i in 0..mutNumber do
+        for i in 1..mutNumber do
             let index = rand.Next (Array.length chromosoma) 
             chromosoma.[index] <- mutation chromosoma.[index]
     
@@ -56,14 +56,14 @@ module GeneticFramework.Generic.Mutators
 
     ///Apply a mutation to all genes 
     let allMutator mutation probability chromosoma =
-        let length = Array.length chromosoma
+        let length = Array.length chromosoma - 1
         for i in 0..length do
             chromosoma.[i] <- if rand.NextDouble() >= probability 
                                 then mutation chromosoma.[i] else chromosoma.[i]
 
     ///Apply a random mutation from the mutations array to all genes 
     let randMutator mutations probability chromosoma =
-        let length = Array.length chromosoma
+        let length = Array.length chromosoma - 1
         let mutNumber = Array.length mutations
         for i in 0..length do
             let mut = rand.Next(mutNumber)

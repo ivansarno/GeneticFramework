@@ -23,15 +23,15 @@ namespace GeneticFramawork.Integer
 
         let private rand = System.Random()
 
-        let addModMut maxValue gene = (gene + rand.Next(0, maxValue)) % maxValue
+        let addModMut maxValue gene = (gene + rand.Next(maxValue)) % maxValue
 
-        let subModMut maxValue gene = (gene - rand.Next(0, maxValue)) % maxValue
+        let subModMut maxValue gene = (gene - rand.Next(maxValue)) % maxValue
          
 
-        let mulModMut maxValue gene = (gene * rand.Next(0, maxValue)) % maxValue
+        let mulModMut maxValue gene = (gene * rand.Next(maxValue)) % maxValue
 
         let divModMut maxValue gene = 
-            let mutable num = rand.Next(0, maxValue)
+            let mutable num = rand.Next(maxValue)
             num <- if num = 0 then num + 1 else num
             (gene / num) % maxValue
 
@@ -65,18 +65,18 @@ namespace GeneticFramawork.Integer
 
         ///Returns a population of random genes
         let randInit minValue (fitness:int[]->int) maxValue length genes =
-            [|for i in 0..genes-1 -> 
-                let e = [|for i in 0..length-1 -> rand.Next(minValue, maxValue+1)|]
+            [|for i in 1..genes -> 
+                let e = [|for i in 1..length -> rand.Next(minValue, maxValue)|]
                 in (e, fitness e)|]
         
         ///Returns a population of genes of only zero
         let zeroInit (fitness:int[]->int) length genes =
             let temp = Array.zeroCreate length
             let temp2 = (temp, fitness temp)
-            [|for i in 0..genes-1 -> temp2|]
+            [|for i in 1..genes -> temp2|]
         
         ///Returns a population of genes of only one
         let oneInit (fitness:int[]->int) length genes =
             let temp = Array.create length 1
             let temp2 = (temp, fitness temp)
-            [|for i in 0..genes-1 -> temp2|]
+            [|for i in 1..genes -> temp2|]

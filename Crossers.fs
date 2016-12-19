@@ -52,7 +52,7 @@ let doubleCross (parent1: 'a [], parent2: 'a []) =
 let private swapCross swaps (parent1, parent2) =
     let son1 = Array.copy parent1
     let son2 = Array.copy parent1
-    for _ in 0..swaps do
+    for _ in 1..swaps do
         let index = rand.Next (Array.length parent1)
         let temp = son1.[index]
         son1.[index] <- son2.[index]
@@ -61,7 +61,7 @@ let private swapCross swaps (parent1, parent2) =
 
 ///Like swapCross but number of swaps is random between 1 and maxSwaps.
 let private randSwapCross maxSwaps (parent1, parent2) = 
-    let swaps = rand.Next(1, maxSwaps)
+    let swaps = rand.Next(maxSwaps)
     swapCross swaps (parent1, parent2)
 
 
@@ -83,7 +83,7 @@ let maskCross (mask: BitArray) (parent1: 'a[], parent2: 'a[]) =
 
 ///version of maskCross with random mask
 let randMaskCross length (parent1, parent2) =
-    let temp = [|for i in 0..(length/32 + 1) -> rand.Next()|]
+    let temp = [|for i in 1..length -> rand.Next() % 2 = 1|]
     let mask = BitArray(temp)
     maskCross mask (parent1, parent2)
 
