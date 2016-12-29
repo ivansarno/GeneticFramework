@@ -83,7 +83,7 @@ let maskCross (mask: BitArray) (parent1: 'a[], parent2: 'a[]) =
 
 ///version of maskCross with random mask
 let randMaskCross length (parent1, parent2) =
-    let temp = [|for i in 1..length -> rand.Next() % 2 = 1|]
+    let temp = [|for i in 1..length -> rand.Next(2) = 0|]
     let mask = BitArray(temp)
     maskCross mask (parent1, parent2)
 
@@ -104,3 +104,4 @@ let segmentedCross probability (parent1, parent2) =
             routine ((p1.[index], p2.[index])::temp) (index-1) parents
     routine [] (Array.length parent1 - 1) (parent1, parent2)
     |> List.toArray |> Array.unzip
+

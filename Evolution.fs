@@ -143,10 +143,10 @@ let meanEvolution crosser selector fitness mutator changes population =
         if attempts = 0 then current
         else
             let generation = mergeRestrict (Array.length population) population (reproduction current)
-            let mean = double(Array.sumBy (fun (x,y) -> y) current) / double(Array.length generation)
+            let mean = Array.averageBy (snd>>float) generation 
             if mean > max then routine generation mean changes
             else routine generation max (attempts-1)
-    let mean = double(Array.sumBy (fun (x,y) -> y) population) / double(Array.length population)
+    let mean = Array.averageBy (snd>>float) population
     routine population mean changes;;
 
 ///Evolves the population until the mean fitness >= maxFitness value (use elitism)
@@ -154,7 +154,7 @@ let limitMeanEvolution crosser selector fitness mutator maxFitness population =
     let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
     let rec routine (current: ('a*int) []) =
         let generation = mergeRestrict (Array.length population) population (reproduction current)
-        let mean = double(Array.sumBy (fun (x,y) -> y) current) / double(Array.length generation)
+        let mean = Array.averageBy (snd>>float) generation
         if mean >= maxFitness then generation
         else routine generation in
     routine (Array.sortBy (fun (x,y) -> -y) population) //vedere perchè sorta
