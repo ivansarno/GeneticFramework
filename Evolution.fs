@@ -44,7 +44,7 @@ let private stdReproduction crosser selector fitness mutator = fun population ->
 ///Take a reproduction routine and return a routine that discards the elements 
 ///with lower value to the minimum value of the previous generation
 let private lazyReproduction reproduction = fun population ->
-    let minimum: int = snd(Array.last population)
+    let minimum: int = snd (Array.maxBy snd population)
     Seq.filter (fun (x,y) -> y > minimum) (reproduction population) 
 
 
