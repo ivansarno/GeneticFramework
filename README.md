@@ -1,7 +1,7 @@
 # GeneticFramework
 Framework for Genetic Algorithm in F# 
 
-**This project is unstable, master branch is coherent and functioning, other branches is in development**
+**This project is unstable, master branch is coherent and functioning, but not tested, other branches is in development**
 
 The framework allows you to create complex functions that implements Genetic Algorithms,structured as a pipeline.
 The framework provides several operators to build the pipeline. The design focuses on flexibility , efficiency is secondary, the purpose is to give the user the ability to experiment easily with various solutions to choose the appropriate algorithm.
