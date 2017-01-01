@@ -17,13 +17,14 @@ limitations under the License.
 *)
 
 
-#load "Selectors.fs" "Crossers.fs" 
+#load "Selectors.fs" "Crossers.fs" "Mutators.fs"
 #load "Evolution.fs" "Integer.fs" "Utils.fs"
 open GeneticFramework.Generic.Selectors
 open GeneticFramework.Generic.Crossers
 open GeneticFramework.Generic.Evolution
-open GeneticFramawork.Integer.Mutators
+open GeneticFramawork.Integer.Mutations
 open GeneticFramework.Generic.Utils
+open GeneticFramework.Generic.Mutators
 open GeneticFramawork.Integer.Utils
 
 (*This is an example of how use GeneticFramework to build an algorithm to solve a problem. This example explains configuration and pipelining.
@@ -60,7 +61,7 @@ let changes = 10 //number of iterations of the algorithms without which the solu
 
 //Algorithms configuration:
 //mutation configuration
-let mutator = addModMut maxSel
+let mutator = singleMutator (addModMut maxSel)
 
 (*to improve clarity fix some elements of the pipelines:*)
 //initializes the population with random elements and fits

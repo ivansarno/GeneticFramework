@@ -44,7 +44,7 @@ let private stdReproduction crosser selector fitness mutator = fun population ->
 ///Take a reproduction routine and return a routine that discards the elements 
 ///with lower value to the minimum value of the previous generation
 let private lazyReproduction reproduction = fun population ->
-    let minimum: int = snd(Array.last population)
+    let minimum: int = snd (Array.maxBy snd population)
     Seq.filter (fun (x,y) -> y > minimum) (reproduction population) 
 
 
@@ -66,7 +66,7 @@ let eliteEvolution crosser selector fitness mutator changes population =
 
 ///For each iteration take the best elements of the population and the new generation(implements elitism)
 ///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
-let grupEvolution crosser selector fitness mutator changes population =
+let sumEvolution crosser selector fitness mutator changes population =
     let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
     let rec routine current max attempts =
         if attempts = 0 then current
@@ -121,7 +121,42 @@ let percentExpander crosser selector fitness mutator factor population =
 ///elements is the number of elements of one sub-population
 ///grups is the number of sub-population.
 ///This algorthm partially avoid the crouding
-let private iterativeEvolution evolution initializer elements grups =
+let iterativeEvolution evolution initializer elements grups =
     let first (x: 'T []) = x.[0] 
-    [|for _ in 0..grups ->  first(evolution (initializer elements))|]
+    [|for _ in 1..grups ->  first(evolution (initializer elements))|]
+
+///Evolves the population until a maximum fitness value (use elitism)
+let limitEvolution crosser selector fitness mutator maxFitness population =
+    let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
+    let rec routine (current: ('a*int) []) =
+        let generation = mergeRestrict (Array.length population) population (reproduction current)
+        let max = Array.maxBy snd generation
+        if max >= maxFitness then generation
+        else routine generation in
+    routine (Array.sortBy (fun (x,y) -> -y) population)
+
+///For each iteration take the best elements of the population and the new generation(implements elitism)
+///if the sum of value of all elements of the population not change for "changes" consecutive iterations the algorithms end.
+let meanEvolution crosser selector fitness mutator changes population =
+    let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
+    let rec routine current max attempts =
+        if attempts = 0 then current
+        else
+            let generation = mergeRestrict (Array.length population) population (reproduction current)
+            let mean = Array.averageBy (snd>>float) generation 
+            if mean > max then routine generation mean changes
+            else routine generation max (attempts-1)
+    let mean = Array.averageBy (snd>>float) population
+    routine population mean changes;;
+
+///Evolves the population until the mean fitness >= maxFitness value (use elitism)
+let limitMeanEvolution crosser selector fitness mutator maxFitness population =
+    let reproduction = lazyReproduction (stdReproduction crosser selector fitness mutator)
+    let rec routine (current: ('a*int) []) =
+        let generation = mergeRestrict (Array.length population) population (reproduction current)
+        let mean = Array.averageBy (snd>>float) generation
+        if mean >= maxFitness then generation
+        else routine generation in
+    routine (Array.sortBy (fun (x,y) -> -y) population) //vedere perchè sorta
+
     

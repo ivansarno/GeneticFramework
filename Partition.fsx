@@ -17,7 +17,7 @@ limitations under the License.
 *)
 
 
-#load "Selectors.fs" "Crossers.fs" "Mutator.fs"
+#load "Selectors.fs" "Crossers.fs" "Mutators.fs"
 #load "Evolution.fs" "BitString.fs" "Utils.fs"
 open GeneticFramework.Generic.Selectors
 open GeneticFramework.Generic.Crossers
@@ -50,10 +50,9 @@ an 20 % for the thrid*)
 
 let selector = probOp [|0.5; 0.30; 0.20|] [|contSel; revSel; randSel|]
 
-(*Mutator configuration: we wont a mutation ratio of 40% and apply from 1 to elementsNumber/4 mutation to each element, 
-a mutation consist ofthe negation of a random bit*)
+(*Mutator configuration: we wont a mutation ratio of 40%, a mutation consist of the negation of a random bit*)
 
-let mutator = optionalMutator (randMultipleMutator notMut (elementsNumber/4)) 0.4
+let mutator = optionalMutator notMut 0.4
 
 (*Crosser configuration: we combine 2 crossers, one take first 5 genes from first parent and the others from second parent, 
 the other take odds genes from first parent and evens from second. The 2 crossers are selected randomly*)
@@ -67,4 +66,4 @@ for 10 consecutive iterations the sum of values of the element does not increase
 let populationSize = 20
 let changes = 10
 let population = Array.concat [|(zeroInit fitness elementsNumber (populationSize/2)); (oneInit fitness elementsNumber (populationSize/2))|]
-let solution = sortRestrictor 1 <| grupEvolution crosser selector fitness mutator changes population
+let solution = sortRestrictor 1 <| sumEvolution crosser selector fitness mutator changes population

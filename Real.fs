@@ -19,48 +19,26 @@ limitations under the License.
 
 ///Basic mutation operator for Real
 namespace GeneticFramawork.Real
-    module Mutators =    
+    module Mutions =    
 
         let private rand = System.Random()
 
-    
-        let addMut minValue maxValue element =
-            let index = rand.Next(Array.length element)
-            let num = (element.[index] + rand.NextDouble() * (maxValue - minValue) + minValue)
-            if num > maxValue then element.[index] <- maxValue
-            elif num < minValue then element.[index] <- minValue
-            else element.[index] <- num
+        let addMut minValue maxValue gene = max minValue (min (gene + (rand.NextDouble() * (maxValue - minValue) + minValue)) maxValue)
+            
+        let subMut minValue maxValue gene = max minValue (min (gene - (rand.NextDouble() * (maxValue - minValue) + minValue)) maxValue)
+                    
+        let mulMut minValue maxValue gene = max minValue (min (gene * (rand.NextDouble() * (maxValue - minValue) + minValue)) maxValue)
+            
 
-        let subMut minValue maxValue element =
-            let index = rand.Next(Array.length element)
-            let num = (element.[index] - rand.NextDouble() * (maxValue - minValue) + minValue)
-            if num > maxValue then element.[index] <- maxValue
-            elif num < minValue then element.[index] <- minValue
-            else element.[index] <- num
-         
+        let divMut minValue maxValue gene =
+            let mutable num = (rand.NextDouble() * (maxValue - minValue) + minValue)
+            num <- if num = 0.0 then num + 1.0 else num
+            max minValue (min (gene / num) maxValue)
 
-        let mulMut minValue maxValue element =
-            let index = rand.Next(Array.length element)
-            let num = (element.[index] * rand.NextDouble() * (maxValue - minValue) + minValue)
-            if num > maxValue then element.[index] <- maxValue
-            elif num < minValue then element.[index] <- minValue
-            else element.[index] <- num
+        let negMut (gene: double) = -gene
 
-        let divMut minValue maxValue element =
-            let index = rand.Next(Array.length element)
-            let num = (element.[index] / rand.NextDouble() * (maxValue - minValue) + minValue)
-            if num > maxValue then element.[index] <- maxValue
-            elif num < minValue then element.[index] <- minValue
-            else element.[index] <- num
-    
-        let negMut (element: double[]) =
-            let index = rand.Next(Array.length element)
-            element.[index] <- -element.[index]
+        let replMut minValue maxValue gene = rand.NextDouble() * (maxValue - minValue) + minValue 
 
-
-        let replMut minValue maxValue element =
-            let index = rand.Next(Array.length element) 
-            element.[index] <- rand.NextDouble() * (maxValue - minValue) + minValue
 
     module Utils=
         let private rand = System.Random()

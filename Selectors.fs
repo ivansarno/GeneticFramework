@@ -25,7 +25,7 @@ let private rand = System.Random();;
 ///Returns random selected couples
 let randSel population = 
     let size = Array.length population
-    seq {for i in 0..size -> (fst(population.[rand.Next(size)]), fst(population.[rand.Next(size)]))}
+    seq {for i in 0..size-1 -> (fst(population.[rand.Next(size)]), fst(population.[rand.Next(size)]))}
 
 ///Returns random selected couples of different elements
 let distSel population = 
