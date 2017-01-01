@@ -41,16 +41,16 @@ namespace GeneticFramawork.BitString
             element.Set(index, not (element.Get(index)))
 
         let orMaskMut (mask: BitArray) (element: BitArray) =
-            element.Or mask
+            element.Or mask |> ignore
         
         let andMaskMut (mask: BitArray) (element: BitArray) =
-            element.And mask
+            element.And mask |> ignore
         
         let xorMaskMut (mask: BitArray) (element: BitArray) =
-            element.Xor mask
+            element.Xor mask |> ignore
 
         let notAllMut (element: BitArray) =
-            element.Not()
+            element.Not() |> ignore
 
     module Utils =
 
