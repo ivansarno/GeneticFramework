@@ -1,7 +1,7 @@
 ﻿(*
     GeneticFramework
 
-    Copyright 2015 Ivan Sarno
+    Copyright 2016 Ivan Sarno
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ module GeneticFramework.Generic.Mutators
                 mutator element
 
           
-    ///Swaps 2 random elements s
+    ///Swaps 2 random elements 
     let swapper parent =
         let index1 = rand.Next (Array.length parent)
         let index2 = rand.Next (Array.length parent)
@@ -69,3 +69,15 @@ module GeneticFramework.Generic.Mutators
             let mut = rand.Next(mutNumber)
             chromosoma.[i] <- if rand.NextDouble() >= probability 
                                 then mutations.[mut] chromosoma.[i] else chromosoma.[i]
+
+    ///Apply a random mutation from the mutations array to a random gene 
+    let randMutation mutations chromosoma = 
+        let length = Array.length chromosoma - 1
+        let mutNumber = Array.length mutations
+        let i = rand.Next length
+        chromosoma.[i] <- mutations.[rand.Next(mutNumber)] chromosoma.[i] 
+
+    ///Apply a random mutator from the mutators array
+    let randomMutator mutatiors chromosoma = 
+        let mutNumber = Array.length mutatiors
+        mutatiors.[rand.Next(mutNumber)] chromosoma

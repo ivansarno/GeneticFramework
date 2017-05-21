@@ -1,7 +1,7 @@
 ﻿(*
     GeneticFramework
 
-    Copyright 2015 Ivan Sarno
+    Copyright 2016 Ivan Sarno
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ let doubleCross (parent1: 'a [], parent2: 'a []) =
 
 ///Swap the elements at a random index
 ///swaps is the number of the swaps  
-let swapCross swaps (parent1, parent2) =
+let private swapCross swaps (parent1, parent2) =
     let son1 = Array.copy parent1
     let son2 = Array.copy parent1
     for _ in 1..swaps do
@@ -60,7 +60,7 @@ let swapCross swaps (parent1, parent2) =
     (son1, son2)
 
 ///Like swapCross but number of swaps is random between 1 and maxSwaps.
-let randSwapCross maxSwaps (parent1, parent2) = 
+let private randSwapCross maxSwaps (parent1, parent2) = 
     let swaps = rand.Next(maxSwaps)
     swapCross swaps (parent1, parent2)
 
